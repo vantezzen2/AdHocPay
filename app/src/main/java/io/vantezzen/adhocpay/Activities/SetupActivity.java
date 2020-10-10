@@ -1,29 +1,22 @@
-package io.vantezzen.adhocpay;
-
-import androidx.appcompat.app.AppCompatActivity;
+package io.vantezzen.adhocpay.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import net.sharksystem.asap.android.apps.ASAPActivity;
-import net.sharksystem.asap.android.apps.ASAPApplication;
 
-public class SetupActivity extends ASAPActivity {
+import io.vantezzen.adhocpay.Activities.MainActivity;
+import io.vantezzen.adhocpay.AdHocPayApplication;
+import io.vantezzen.adhocpay.R;
 
-    public SetupActivity() {
-        super(AdHocPayApplication.getInstance());
-    }
-
+public class SetupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-
-        AdHocPayApplication.getInstance().getASAPCommunication().startASAP();
     }
 
     public void onSetupConfirm(View view) {

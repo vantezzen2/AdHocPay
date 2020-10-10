@@ -1,9 +1,14 @@
-package io.vantezzen.adhocpay;
+package io.vantezzen.adhocpay.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import io.vantezzen.adhocpay.Activities.MainActivity;
+import io.vantezzen.adhocpay.Activities.SetupActivity;
+import io.vantezzen.adhocpay.AdHocPayApplication;
+import io.vantezzen.adhocpay.R;
 
 /**
  * StartupActivity: Startet die AdHoc Verbindung und leitet auf die richtige

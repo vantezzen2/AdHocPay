@@ -1,10 +1,13 @@
 package io.vantezzen.adhocpay;
 
 import android.app.Activity;
+import android.util.Log;
 
 import net.sharksystem.asap.ASAP;
+import net.sharksystem.asap.ASAPChannel;
 import net.sharksystem.asap.ASAPEngineFS;
 import net.sharksystem.asap.ASAPException;
+import net.sharksystem.asap.ASAPMessages;
 import net.sharksystem.asap.ASAPStorage;
 import net.sharksystem.asap.android.apps.ASAPApplication;
 
@@ -63,6 +66,43 @@ public class AdHocPayApplication extends ASAPApplication {
         } catch (ASAPException e) {
             e.printStackTrace();
         }
+
+        if (asapStorage == null) {
+            try {
+                asapStorage = getASAPStorage(ASAP_APPNAME);
+            } catch (IOException e) {
+                // TODO: Handle these
+                e.printStackTrace();
+            } catch (ASAPException e) {
+                e.printStackTrace();
+            }
+        }
+
+        restoreData();
+    }
+
+    /**
+     * Restore data that we stored from previous runs
+     */
+    private void restoreData() {
+        ASAPChannel channel;
+        ASAPMessages messages;
+        try {
+            channel = asapStorage.getChannel(DEFAULT_URI);
+            messages = channel.getMessages();
+        } catch (ASAPException e) {
+            // TODO: Handle these
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            Log.d("AdHocPayApplication", "Restoring " + messages.size() + " messages");
+        } catch (IOException e) {}
+        asap.asapMessagesReceived(messages);
     }
 
     /**
@@ -71,7 +111,7 @@ public class AdHocPayApplication extends ASAPApplication {
      * @param initialActivity
      * @return Current Application instance
      */
-    static AdHocPayApplication initializeApplication(Activity initialActivity) {
+    public static AdHocPayApplication initializeApplication(Activity initialActivity) {
         if (AdHocPayApplication.instance == null) {
             Collection<CharSequence> formats = new ArrayList<>();
             formats.add(ASAP_APPNAME);
