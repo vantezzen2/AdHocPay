@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AdHoc Pay</string>
+    <string name="setup_title">Willkommen bei AdHoc Pay!</string>
+    <string name="setup_intro">Mit AdHoc Pay kannst du überall und ohne Internetverbindung Geld überweisen.\nUm AdHoc Pay nutzen zu können, wähle bitte einen Nutzernamen:</string>
+    <string name="setup_username">Nutzername</string>
+    <string name="setup_action">Jetzt anmelden</string>
+    <string name="home_credit_title">Dein Guthaben</string>
+    <string name="setup_error_empty">Bitte wähle einen Nutzername</string>
+</resources>
