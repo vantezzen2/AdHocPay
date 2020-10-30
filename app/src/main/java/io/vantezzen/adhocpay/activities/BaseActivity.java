@@ -1,4 +1,4 @@
-package io.vantezzen.adhocpay.Activities;
+package io.vantezzen.adhocpay.activities;
 
 import android.os.Bundle;
 
@@ -6,7 +6,7 @@ import net.sharksystem.asap.android.apps.ASAPActivity;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 
-public class BaseActivity extends ASAPActivity {
+public abstract class BaseActivity extends ASAPActivity {
     public BaseActivity() {
         super(AdHocPayApplication.getInstance());
     }
@@ -16,4 +16,9 @@ public class BaseActivity extends ASAPActivity {
         super.onCreate(savedInstanceState);
         AdHocPayApplication.getInstance().getASAPCommunication().startASAP();
     }
+
+    /**
+     * React to changes in transaction data
+     */
+    abstract public void onDataChange();
 }

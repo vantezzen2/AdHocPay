@@ -1,4 +1,4 @@
-package io.vantezzen.adhocpay.Activities;
+package io.vantezzen.adhocpay.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import net.sharksystem.asap.android.apps.ASAPActivity;
-
-import io.vantezzen.adhocpay.Activities.MainActivity;
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
 
@@ -17,6 +14,11 @@ public class SetupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+    }
+
+    @Override
+    public void onDataChange() {
+
     }
 
     public void onSetupConfirm(View view) {

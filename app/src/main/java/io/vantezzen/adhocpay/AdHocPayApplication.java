@@ -1,108 +1,39 @@
 package io.vantezzen.adhocpay;
 
 import android.app.Activity;
-import android.util.Log;
 
-import net.sharksystem.asap.ASAP;
-import net.sharksystem.asap.ASAPChannel;
-import net.sharksystem.asap.ASAPEngineFS;
-import net.sharksystem.asap.ASAPException;
-import net.sharksystem.asap.ASAPMessages;
-import net.sharksystem.asap.ASAPStorage;
 import net.sharksystem.asap.android.apps.ASAPApplication;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.vantezzen.adhocpay.Integrations.ASAPCommunication;
-import io.vantezzen.adhocpay.Integrations.Storage;
+import io.vantezzen.adhocpay.network.ASAPCommunication;
+import io.vantezzen.adhocpay.network.NetworkCommunicator;
+import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.application.ManagerImpl;
 
 /**
- * AdHocPayApplication: This class is AdHoc Pay's heart.
- * It manages communication between different part of the app and provides global data
- * and information across all activities.
+ * AdHocPayApplication: Dies ist die Basisklasse von AdHoc Pay.
+ * Sie setzt den Manager und die ASAPCommunication Verbindung auf, damit die Applikation starten kann
  */
 public class AdHocPayApplication extends ASAPApplication {
-    // ASAP Configuration values
-    public static final String ASAP_APPNAME = "application/x-AdHocPay";
-    public static final String USER_STORAGE = "AHP:USER";
-    public static final String DEFAULT_URI = "adhocpay://data";
-
-    // Current running instances
-    private static AdHocPayApplication instance = null;
-    private ASAPCommunication asap = null;
-    private Storage storage = null;
-    private ASAPStorage asapStorage = null;
-
-    // Client data
-    private CharSequence id = null;
+    private static AdHocPayApplication instance;
+    private Manager manager;
+    private NetworkCommunicator communicator;
 
     /**
-     * Create a new AdHocPayApplication.
-     * This method will never need to be called - the initializeApplication method is doing that for you
+     * Erstelle eine AdHocPayApplication instanz.
+     * Diese Methode wird von initializeApplication aufgerufen
      *
-     * @param supportedFormats
-     * @param initialActivity
+     * @param supportedFormats Unterstützte Formate der ASAP App
+     * @param initialActivity Erste Activity
      */
     protected AdHocPayApplication(Collection<CharSequence> supportedFormats, Activity initialActivity) {
         super(supportedFormats, initialActivity);
 
-        this.asap = new ASAPCommunication(this);
-        this.storage = new Storage(this);
-        this.id = ASAP.createUniqueID();
-
-        // Set up ASAP folder
-        String folder = getApplicationRootFolder(ASAP_APPNAME);
-        try {
-            asapStorage = ASAPEngineFS.getASAPStorage(
-                    (String) getOwnerId(),
-                    folder,
-                    ASAP_APPNAME
-            );
-        } catch (IOException e) {
-            // TODO: Handle these
-            e.printStackTrace();
-        } catch (ASAPException e) {
-            e.printStackTrace();
-        }
-
-        if (asapStorage == null) {
-            try {
-                asapStorage = getASAPStorage(ASAP_APPNAME);
-            } catch (IOException e) {
-                // TODO: Handle these
-                e.printStackTrace();
-            } catch (ASAPException e) {
-                e.printStackTrace();
-            }
-        }
-
-        restoreData();
-    }
-
-    /**
-     * Restore data that we stored from previous runs
-     */
-    private void restoreData() {
-        ASAPChannel channel;
-        ASAPMessages messages;
-        try {
-            channel = asapStorage.getChannel(DEFAULT_URI);
-            messages = channel.getMessages();
-        } catch (ASAPException e) {
-            // TODO: Handle these
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        try {
-            Log.d("AdHocPayApplication", "Restoring " + messages.size() + " messages");
-        } catch (IOException e) {}
-        asap.asapMessagesReceived(messages);
+        manager = new ManagerImpl(this);
+        communicator = new ASAPCommunication(manager, null);
+        communicator.setup();
     }
 
     /**
@@ -114,46 +45,13 @@ public class AdHocPayApplication extends ASAPApplication {
     public static AdHocPayApplication initializeApplication(Activity initialActivity) {
         if (AdHocPayApplication.instance == null) {
             Collection<CharSequence> formats = new ArrayList<>();
-            formats.add(ASAP_APPNAME);
+            formats.add(ManagerImpl.ASAP_APPNAME);
 
-            AdHocPayApplication.instance = new AdHocPayApplication(formats, initialActivity);
+            new AdHocPayApplication(formats, initialActivity);
             AdHocPayApplication.instance.startASAPApplication();
         }
 
         return AdHocPayApplication.instance;
-    }
-
-    /**
-     * Update our saved username
-     *
-     * @param username
-     */
-    public void setUsername(String username) {
-        storage.set(USER_STORAGE, "username", username);
-    }
-
-    /**
-     * Get the user's current username
-     * This will return null if no username is set
-     *
-     * @return Username or null
-     */
-    public String getUsername() {
-        return storage.get(USER_STORAGE, "username");
-    }
-
-    public CharSequence getOwnerId() {
-        return this.id;
-    }
-
-    /**
-     * Get the information about if the app is set up.
-     * This is used to determine if the Setup screen should be opened
-     *
-     * @return Boolean
-     */
-    public boolean isSetup() {
-        return getUsername() != null;
     }
 
     /**
@@ -166,20 +64,11 @@ public class AdHocPayApplication extends ASAPApplication {
     }
 
     /**
-     * Get the current ASAPCommunication instance
+     * Liefert die aktuelle Manager instanz für diese App
      *
-     * @return Instance
+     * @return Manager
      */
-    public ASAPCommunication getASAPCommunication() {
-        return asap;
-    }
-
-    /**
-     * Get the current storage instance
-     *
-     * @return Instance
-     */
-    public Storage getStorage() {
-        return storage;
+    public Manager getManager() {
+        return manager;
     }
 }

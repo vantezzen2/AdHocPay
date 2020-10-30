@@ -6,4 +6,5 @@
     <string name="setup_action">Jetzt anmelden</string>
     <string name="home_credit_title">Dein Guthaben</string>
     <string name="setup_error_empty">Bitte wähle einen Nutzername</string>
+    <string name="startup_image_desc">Logo</string>
 </resources>
