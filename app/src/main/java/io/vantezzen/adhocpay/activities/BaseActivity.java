@@ -14,7 +14,8 @@ public abstract class BaseActivity extends ASAPActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AdHocPayApplication.getInstance().getASAPCommunication().startASAP();
+
+        AdHocPayApplication.getInstance().getManager().setupNetwork();
     }
 
     /**

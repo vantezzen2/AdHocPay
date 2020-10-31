@@ -8,14 +8,17 @@ import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
 
+import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
+import io.vantezzen.adhocpay.network.NetworkCommunicator;
 
 /**
  * Application Manager: Verwalte die einzelnen Komponenten der Applikation
  */
 public interface Manager {
+    // Weiterleitungen an die Application
     /**
      * Füge einen ASAP Message Listener zur aktuellen ASAPApplication hinzu
      *
@@ -29,6 +32,13 @@ public interface Manager {
      * @return Activity
      */
     Activity getActivity();
+
+    /**
+     * Sendet eine Nachricht an die aktuelle View, dass die angezeigten Daten aktualisiert
+     * werden müssen.
+     * Dies tritt in der Regel auf, wenn eine neue Transaktion empfangen wird
+     */
+    void refreshView();
 
     // ASAP Einstellungen
     /**
@@ -71,6 +81,20 @@ public interface Manager {
      */
     ASAPStorage getAsapStorage(String format) throws IOException, ASAPException;
 
+    /**
+     * Liefert das Netzwerk
+     *
+     * @return Netzwerkkommunikation
+     */
+    NetworkCommunicator getNetwork();
+
+    /**
+     * Setze das Netzwerk auf
+     * Dies setzt bei ASAP vorraus, dass wir uns in einer ASAPActivity befinden, deswegen
+     * muss dieser Schritt unabhängig vom Konstruktor geschehen
+     */
+    void setupNetwork();
+
     // Einstellungen
     /**
      * Speichere eine Einstellung
@@ -109,4 +133,22 @@ public interface Manager {
      * @return Transaction Repository
      */
     TransactionRepository getTransactionRepository();
+
+    // Controller
+
+    /**
+     * Liefert den aktuellen Controller Manager
+     *
+     * @return Controller Manager
+     */
+    ControllerManager getControllerManager();
+
+    // Logger
+    /**
+     * Logge eine Nachricht
+     *
+     * @param start Start der Nachricht. Dies sollte i.d.R. der aktuelle Klassenname sein
+     * @param message Nachricht
+     */
+    void log(String start, String message);
 }

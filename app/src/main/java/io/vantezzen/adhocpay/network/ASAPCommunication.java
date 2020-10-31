@@ -18,6 +18,7 @@ import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 import java.io.IOException;
 import java.util.Iterator;
 
+import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserDeserializer;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
@@ -30,15 +31,21 @@ import io.vantezzen.adhocpay.controllers.Controller;
 public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCommunicator {
     private Manager application = null;
     private boolean started = false;
-    private Controller c = null;
+    private ControllerManager controllerManager = null;
     private ASAPStorage asapStorage = null;
 
     private String LOG_START = "ASAPCommunication";
     private String id;
 
-    public ASAPCommunication(Manager application, Controller c) {
+    /**
+     * Setze eine neue ASAPCommunication Klasse auf
+     *
+     * @param application Application Manager
+     * @param c Controller Manager
+     */
+    public ASAPCommunication(Manager application, ControllerManager c) {
         this.application = application;
-        this.c = c;
+        this.controllerManager = c;
 
         // We are the listener for all new ASAP messages
         application.registerASAPListener(this);
@@ -47,7 +54,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     @Override
     public void setup() {
         if (started) {
-            Log.d(LOG_START, "Already started");
+            this.application.log(LOG_START, "Already started");
             return;
         }
 
@@ -82,7 +89,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         Activity activity = application.getActivity();
         if (!(activity instanceof ASAPActivity)) {
-            Log.d(LOG_START, "Not currently in a ASAP Activity");
+            this.application.log(LOG_START, "Not currently in a ASAP Activity");
             // TODO: Handle this
             return;
         }
@@ -92,7 +99,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         act.startBluetoothDiscovery();
         act.startBluetoothDiscoverable();
 
-        Log.d(LOG_START, "Communication started");
+        this.application.log(LOG_START, "Communication started");
 
         restoreData();
 
@@ -118,7 +125,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         }
 
         try {
-            Log.d("AdHocPayApplication", "Restoring " + messages.size() + " messages");
+            this.application.log("AdHocPayApplication", "Restoring " + messages.size() + " messages");
         } catch (IOException e) {}
         asapMessagesReceived(messages);
     }
@@ -139,18 +146,18 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         if (!(activity instanceof ASAPActivity)) {
             // We cannot transmit on non-asap activities
-            Log.d(LOG_START, "Can't transmit message as we aren't in an ASAP Activity");
+            this.application.log(LOG_START, "Can't transmit message as we aren't in an ASAP Activity");
             return false;
         }
 
         try {
             ((ASAPActivity) activity).sendASAPMessage(appName, uri, message, true);
         } catch(ASAPException e) {
-            Log.d(LOG_START, "Error while sending message: " + e);
+            this.application.log(LOG_START, "Error while sending message: " + e);
             return false;
         }
 
-        Log.d(LOG_START, "Successfully sent message");
+        this.application.log(LOG_START, "Successfully sent message");
 
         return true;
     }
@@ -159,33 +166,34 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     public void asapMessagesReceived(ASAPMessages asapMessages) {
         Iterator<byte[]> msgInter;
 
-        Log.d(LOG_START, "Receiving new message...");
+        this.application.log(LOG_START, "Receiving new message...");
 
         try {
             msgInter = asapMessages.getMessages();
         } catch (IOException e) {
             // Ignore invalid messages
-            Log.d(LOG_START, "Error while receiving message: " + e);
+            this.application.log(LOG_START, "Error while receiving message: " + e);
             return;
         }
         while(msgInter.hasNext()) {
             byte[] msgBytes = msgInter.next();
             String msg = new String(msgBytes);
-            Log.d("ASAPCommunication", "message received: " + msg);
+            this.application.log("ASAPCommunication", "message received: " + msg);
 
             // Teste, dass die Nachricht ein JSON String ist
             if(msg.charAt(0) != '{') continue;
 
             // Füge die Transaktion hinzu
             Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserDeserializer(application.getUserRepository())).create();
-            gson.fromJson(msg, Transaction.class);
+            Transaction transaction = gson.fromJson(msg, Transaction.class);
+            application.getTransactionRepository().add(transaction);
         }
 
-        Log.d(LOG_START, "Messages received");
+        this.application.log(LOG_START, "Messages received");
 
-        // Inform Activity about data update
-        if (this.c != null) {
-            this.c.onDataChange();
+        // Inform Controllers about data update
+        if (this.controllerManager != null) {
+            this.controllerManager.onDataChange();
         }
     }
 
@@ -193,13 +201,13 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     public boolean sendTransaction(Transaction t) {
         String message = t.toJson();
 
-        Log.d(LOG_START, "Sending transaction: " + message);
+        this.application.log(LOG_START, "Sending transaction: " + message);
 
         return transmit(message, application.getDefaultUri());
     }
 
     @Override
-    public void setController(Controller c) {
-        this.c = c;
+    public void setControllerManager(ControllerManager c) {
+        this.controllerManager = c;
     }
 }

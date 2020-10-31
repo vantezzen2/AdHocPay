@@ -3,10 +3,11 @@ package io.vantezzen.adhocpay.models.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.vantezzen.adhocpay.models.Model;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 
-public class User {
+public class User implements Model {
     private String username;
 
     private final String LOG_START = "Model:User";

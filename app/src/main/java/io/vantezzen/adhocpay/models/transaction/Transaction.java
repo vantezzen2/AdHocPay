@@ -30,10 +30,6 @@ public class Transaction implements Model {
         this(users.getUserByName(fromUser), users.getUserByName(toUser), amount, time, repository);
     }
 
-    private void addToList() {
-        ModelStorage.get().addTransaction(this);
-    }
-
     // Getters
     public User getFromUser() {
         return fromUser;

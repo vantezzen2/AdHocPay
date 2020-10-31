@@ -21,6 +21,8 @@ public class AdHocPayApplication extends ASAPApplication {
     private Manager manager;
     private NetworkCommunicator communicator;
 
+    private boolean isAsapSetup = false;
+
     /**
      * Erstelle eine AdHocPayApplication instanz.
      * Diese Methode wird von initializeApplication aufgerufen
@@ -32,8 +34,6 @@ public class AdHocPayApplication extends ASAPApplication {
         super(supportedFormats, initialActivity);
 
         manager = new ManagerImpl(this);
-        communicator = new ASAPCommunication(manager, null);
-        communicator.setup();
     }
 
     /**

@@ -1,11 +1,30 @@
 package io.vantezzen.adhocpay.models.transaction;
 
+import java.time.LocalDate;
+import java.util.Date;
+
+import io.vantezzen.adhocpay.application.Manager;
 import io.vantezzen.adhocpay.models.Repository;
 import io.vantezzen.adhocpay.models.user.User;
+import io.vantezzen.adhocpay.network.NetworkCommunicator;
 
 public class TransactionRepository extends Repository<Transaction> {
-    public Transaction sendTransaction(User sender, User receiver, float amount) {
-        // TODO
+    /**
+     * Sende eine Transaktion an das Netzwerk
+     *
+     * @param sender Sender Nutzer
+     * @param receiver Empfänger Nutzer
+     * @param amount Betrag
+     * @param communicator Netzwerkkommunikation
+     * @return Transaktion falls erfolgreich, sonst null
+     */
+    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) {
+        Transaction transaction = new Transaction(sender, receiver, amount, new Date(), this);
+
+        boolean success = communicator.sendTransaction(transaction);
+        if (success) {
+            return transaction;
+        }
         return null;
     }
 }

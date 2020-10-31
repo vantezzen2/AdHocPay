@@ -1,5 +1,6 @@
 package io.vantezzen.adhocpay.network;
 
+import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.controllers.Controller;
 
@@ -23,9 +24,9 @@ public interface NetworkCommunicator {
     boolean sendTransaction(Transaction t);
 
     /**
-     * Setze den Controller, welcher bei Nachrichten informiert werden soll
+     * Setze den ControllerManager, welcher bei Nachrichten informiert werden soll
      *
-     * @param c Controller
+     * @param c ControllerManager
      */
-    void setController(Controller c);
+    void setControllerManager(ControllerManager c);
 }

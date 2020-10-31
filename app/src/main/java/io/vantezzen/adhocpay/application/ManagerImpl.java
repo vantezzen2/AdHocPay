@@ -11,22 +11,36 @@ import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 import java.io.IOException;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
+import io.vantezzen.adhocpay.activities.BaseActivity;
+import io.vantezzen.adhocpay.controllers.ControllerManager;
+import io.vantezzen.adhocpay.controllers.ControllerManagerImpl;
+import io.vantezzen.adhocpay.logger.AndroidLogger;
+import io.vantezzen.adhocpay.logger.Logger;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
+import io.vantezzen.adhocpay.network.ASAPCommunication;
+import io.vantezzen.adhocpay.network.NetworkCommunicator;
 
 public class ManagerImpl implements Manager {
     private final ASAPApplication application;
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
+    private final ControllerManager controllerManager;
+    private final Logger logger;
 
     public static final String ASAP_APPNAME = "application/x-AdHocPay";
     public static final String DEFAULT_URI = "adhocpay://data";
+    private final NetworkCommunicator communicator;
+    private boolean isAsapSetup = false;
 
     public ManagerImpl(ASAPApplication application) {
         this.application = application;
         this.userRepository = new UserRepository();
         this.transactionRepository = new TransactionRepository();
+        this.controllerManager = new ControllerManagerImpl(this);
+        this.logger = new AndroidLogger();
+        this.communicator = new ASAPCommunication(this, controllerManager);
     }
 
     @Override
@@ -37,6 +51,14 @@ public class ManagerImpl implements Manager {
     @Override
     public Activity getActivity() {
         return application.getActivity();
+    }
+
+    @Override
+    public void refreshView() {
+        Activity activity = application.getActivity();
+        if (activity instanceof BaseActivity) {
+            ((BaseActivity) activity).onDataChange();
+        }
     }
 
     @Override
@@ -62,6 +84,19 @@ public class ManagerImpl implements Manager {
     @Override
     public ASAPStorage getAsapStorage(String format) throws IOException, ASAPException {
         return application.getASAPStorage(format);
+    }
+
+    @Override
+    public NetworkCommunicator getNetwork() {
+        return communicator;
+    }
+
+    @Override
+    public void setupNetwork() {
+        if (!isAsapSetup) {
+            communicator.setup();
+            isAsapSetup = true;
+        }
     }
 
     @Override
@@ -96,5 +131,15 @@ public class ManagerImpl implements Manager {
     @Override
     public TransactionRepository getTransactionRepository() {
         return transactionRepository;
+    }
+
+    @Override
+    public ControllerManager getControllerManager() {
+        return controllerManager;
+    }
+
+    @Override
+    public void log(String start, String message) {
+        logger.log(start, message);
     }
 }

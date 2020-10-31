@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
+import io.vantezzen.adhocpay.application.Manager;
 
 public class SetupActivity extends BaseActivity {
     @Override
@@ -21,6 +22,12 @@ public class SetupActivity extends BaseActivity {
 
     }
 
+    /**
+     * Gehe mit dem Klick des Registrieren Buttons um.
+     * Dies registriert den neuen Benutzer über den UserController
+     *
+     * @param view Button
+     */
     public void onSetupConfirm(View view) {
         EditText nutzername = findViewById(R.id.nutzernameInput);
         TextView errorMessage = findViewById(R.id.errorMessage);
@@ -31,7 +38,8 @@ public class SetupActivity extends BaseActivity {
         }
 
         // Setze unseren neuen Nutzernamen
-        AdHocPayApplication.getInstance().setUsername(nutzername.getText().toString());
+        Manager manager = AdHocPayApplication.getInstance().getManager();
+        manager.getControllerManager().getUserController().registerUser(nutzername.getText().toString());
 
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);

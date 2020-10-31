@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
+import io.vantezzen.adhocpay.application.Manager;
 
 /**
  * StartupActivity: Startet die AdHoc Verbindung und leitet auf die richtige
@@ -25,7 +26,8 @@ public class StartupActivity extends AppCompatActivity {
         this.finish();
 
         Intent intent;
-        if (AdHocPayApplication.getInstance().isSetup()) {
+        Manager manager = AdHocPayApplication.getInstance().getManager();
+        if (manager.getMe() != null) {
             // Nutzer hat sich bereits registriert - starte den Hauptbildschirm
             intent = new Intent(this, MainActivity.class);
         } else {
