@@ -19,10 +19,11 @@ public class TransactionRepository extends Repository<Transaction> {
      * @param communicator Netzwerkkommunikation
      * @return Transaktion falls erfolgreich, sonst null
      */
-    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) throws NullPointerException {
+    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) throws NullPointerException, IllegalArgumentException {
         Validation.notNull(sender);
         Validation.notNull(receiver);
         Validation.notNull(communicator);
+        Validation.greaterThanZero(amount);
 
         Transaction transaction = new Transaction(sender, receiver, amount, new Date(), this);
 

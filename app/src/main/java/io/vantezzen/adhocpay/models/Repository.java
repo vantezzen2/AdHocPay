@@ -26,7 +26,7 @@ public abstract class Repository<Model> {
      * @return Models
      */
     public List<Model> getAll() {
-        return null;
+        return models;
     }
 
     /**

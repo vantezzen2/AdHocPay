@@ -15,4 +15,15 @@ public class Validation {
             throw new NullPointerException("Argument darf nicht null sein");
         }
     }
+
+    /**
+     * Prüfe, dass der Float Wert größer als 0 ist (0 NICHT eingeschlossen)
+     *
+     * @param a Zahl
+     */
+    public static void greaterThanZero(float a) throws IllegalArgumentException {
+        if (a <= 0) {
+            throw new IllegalArgumentException("Argument muss größer als 0 sein");
+        }
+    }
 }

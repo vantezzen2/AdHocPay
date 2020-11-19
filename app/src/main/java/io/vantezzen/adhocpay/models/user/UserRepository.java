@@ -14,7 +14,7 @@ public class UserRepository extends Repository<User> {
      * @param name Nutzernamen
      * @return Nutzer
      */
-    public User getUserByName(String name) {
+    public User getUserByName(String name) throws NullPointerException {
         Validation.notNull(name);
 
         for (User user : getAll()) {
