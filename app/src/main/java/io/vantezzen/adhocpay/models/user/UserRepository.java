@@ -2,6 +2,7 @@ package io.vantezzen.adhocpay.models.user;
 
 import java.util.List;
 
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.models.Repository;
 
 public class UserRepository extends Repository<User> {
@@ -14,6 +15,8 @@ public class UserRepository extends Repository<User> {
      * @return Nutzer
      */
     public User getUserByName(String name) {
+        Validation.notNull(name);
+
         for (User user : getAll()) {
             if (user.getUsername().equals(name)) {
                 return user;

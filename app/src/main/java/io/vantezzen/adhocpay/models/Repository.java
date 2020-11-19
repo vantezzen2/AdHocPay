@@ -3,6 +3,8 @@ package io.vantezzen.adhocpay.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.vantezzen.adhocpay.Validation;
+
 /**
  * Repository: Sammelt Instanzen eines Models
  *
@@ -32,7 +34,8 @@ public abstract class Repository<Model> {
      *
      * @param model Model
      */
-    public void add(Model model) {
+    public void add(Model model) throws NullPointerException {
+        Validation.notNull(model);
         models.add(model);
     }
 

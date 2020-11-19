@@ -46,8 +46,10 @@ public class AdHocPayApplication extends ASAPApplication {
      * @param initialActivity
      * @return Current Application instance
      */
-    public static AdHocPayApplication initializeApplication(Activity initialActivity) {
+    public static AdHocPayApplication initializeApplication(Activity initialActivity) throws NullPointerException {
         if (AdHocPayApplication.instance == null) {
+            Validation.notNull(initialActivity);
+
             Collection<CharSequence> formats = new ArrayList<>();
             formats.add(ManagerImpl.ASAP_APPNAME);
 

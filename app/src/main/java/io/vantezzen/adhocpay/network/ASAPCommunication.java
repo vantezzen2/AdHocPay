@@ -18,6 +18,7 @@ import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 import java.io.IOException;
 import java.util.Iterator;
 
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserDeserializer;
@@ -198,7 +199,9 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     }
 
     @Override
-    public boolean sendTransaction(Transaction t) {
+    public boolean sendTransaction(Transaction t) throws NullPointerException {
+        Validation.notNull(t);
+
         String message = t.toJson();
 
         this.application.log(LOG_START, "Sending transaction: " + message);
@@ -207,7 +210,8 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     }
 
     @Override
-    public void setControllerManager(ControllerManager c) {
+    public void setControllerManager(ControllerManager c) throws NullPointerException {
+        Validation.notNull(c);
         this.controllerManager = c;
     }
 }

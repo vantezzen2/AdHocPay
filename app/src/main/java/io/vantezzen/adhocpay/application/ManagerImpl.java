@@ -11,6 +11,7 @@ import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 import java.io.IOException;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.activities.BaseActivity;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.controllers.ControllerManagerImpl;
@@ -41,7 +42,9 @@ public class ManagerImpl implements Manager {
     // State
     private boolean isAsapSetup = false;
 
-    public ManagerImpl(ASAPApplication application) {
+    public ManagerImpl(ASAPApplication application) throws NullPointerException {
+        Validation.notNull(application);
+
         // Setze benötigte Instanzen auf
         this.application = application;
         this.userRepository = new UserRepository();
@@ -52,7 +55,9 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public void registerASAPListener(ASAPMessageReceivedListener listener) {
+    public void registerASAPListener(ASAPMessageReceivedListener listener) throws NullPointerException {
+        Validation.notNull(listener);
+
         application.addASAPMessageReceivedListener(ASAP_APPNAME, listener);
     }
 
@@ -108,14 +113,19 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public void storeSetting(String key, String value) {
+    public void storeSetting(String key, String value) throws NullPointerException {
+        Validation.notNull(key);
+        Validation.notNull(value);
+
         SharedPreferences.Editor editor = application.getActivity().getSharedPreferences("ADHOCPAY", 0).edit();
         editor.putString(key, value);
         editor.commit();
     }
 
     @Override
-    public String getSetting(String key) {
+    public String getSetting(String key) throws NullPointerException {
+        Validation.notNull(key);
+
         SharedPreferences settings = application.getActivity().getSharedPreferences("ADHOCPAY", 0);
         String data = settings.getString(key, null);
 

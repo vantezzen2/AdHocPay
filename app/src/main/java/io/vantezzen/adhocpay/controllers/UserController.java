@@ -1,5 +1,6 @@
 package io.vantezzen.adhocpay.controllers;
 
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.application.Manager;
 
 /**
@@ -17,6 +18,8 @@ public class UserController extends BaseController {
      * @return False, falls der Nutzer bereits registriert ist
      */
     public boolean registerUser(String username) {
+        Validation.notNull(username);
+
         if (manager.getSetting("username") != null) {
             // Nutzer ist bereits registriert
             return false;

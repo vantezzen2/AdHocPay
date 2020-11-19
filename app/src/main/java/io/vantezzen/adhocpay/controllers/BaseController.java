@@ -1,5 +1,6 @@
 package io.vantezzen.adhocpay.controllers;
 
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.application.Manager;
 
 /**
@@ -18,7 +19,9 @@ public abstract class BaseController implements Controller {
      *
      * @param manager Manager Instanz
      */
-    public BaseController(Manager manager) {
+    public BaseController(Manager manager) throws NullPointerException {
+        Validation.notNull(manager);
+
         this.manager = manager;
     }
 }

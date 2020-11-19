@@ -8,6 +8,8 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
+import io.vantezzen.adhocpay.Validation;
+
 /**
  * We need a custom Gson Deserializer for the User object as we want to reuse existing User instances when possible
  */
@@ -19,7 +21,8 @@ public class UserDeserializer implements JsonDeserializer<User> {
      *
      * @param repository Repository, welche für die Nutzerinstanzen genutzt werden soll
      */
-    public UserDeserializer(UserRepository repository) {
+    public UserDeserializer(UserRepository repository) throws NullPointerException {
+        Validation.notNull(repository);
         this.repository = repository;
     }
 

@@ -21,12 +21,12 @@ public interface NetworkCommunicator {
      * @param t Transaktion, welche gesendet werden soll
      * @return Ob die Transaktion erfolgreich gesendet wurde
      */
-    boolean sendTransaction(Transaction t);
+    boolean sendTransaction(Transaction t) throws NullPointerException;
 
     /**
      * Setze den ControllerManager, welcher bei Nachrichten informiert werden soll
      *
      * @param c ControllerManager
      */
-    void setControllerManager(ControllerManager c);
+    void setControllerManager(ControllerManager c) throws NullPointerException;
 }

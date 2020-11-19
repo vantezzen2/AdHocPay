@@ -3,6 +3,7 @@ package io.vantezzen.adhocpay.models.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.models.Model;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
@@ -11,7 +12,16 @@ public class User implements Model {
     // Daten des Models
     private String username;
 
-    public User(String username, UserRepository repository) {
+    /**
+     * Erstelle einen neuen Nutzer
+     *
+     * @param username Nutzername
+     * @param repository Nutzerrepository
+     * @throws NullPointerException Wenn repository = null
+     */
+    public User(String username, UserRepository repository) throws NullPointerException {
+        Validation.notNull(repository);
+
         repository.add(this);
 
         this.username = username;
@@ -22,7 +32,9 @@ public class User implements Model {
      *
      * @return List of transactions
      */
-    public List<Transaction> transactions(TransactionRepository repository) {
+    public List<Transaction> transactions(TransactionRepository repository) throws NullPointerException {
+        Validation.notNull(repository);
+
         List<Transaction> result = new ArrayList<>();
 
         for(Transaction transaction : repository.getAll()) {
@@ -39,7 +51,8 @@ public class User implements Model {
      *
      * @return Credits
      */
-    public float getCredit(TransactionRepository repository) {
+    public float getCredit(TransactionRepository repository) throws NullPointerException {
+        Validation.notNull(repository);
         float credit = 50;
 
         for (Transaction transaction : transactions(repository)) {

@@ -3,6 +3,7 @@ package io.vantezzen.adhocpay.models.transaction;
 import java.time.LocalDate;
 import java.util.Date;
 
+import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.application.Manager;
 import io.vantezzen.adhocpay.models.Repository;
 import io.vantezzen.adhocpay.models.user.User;
@@ -18,7 +19,11 @@ public class TransactionRepository extends Repository<Transaction> {
      * @param communicator Netzwerkkommunikation
      * @return Transaktion falls erfolgreich, sonst null
      */
-    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) {
+    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) throws NullPointerException {
+        Validation.notNull(sender);
+        Validation.notNull(receiver);
+        Validation.notNull(communicator);
+
         Transaction transaction = new Transaction(sender, receiver, amount, new Date(), this);
 
         boolean success = communicator.sendTransaction(transaction);
