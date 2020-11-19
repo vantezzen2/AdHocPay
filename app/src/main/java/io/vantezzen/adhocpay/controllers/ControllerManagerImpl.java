@@ -4,17 +4,24 @@ import io.vantezzen.adhocpay.application.Manager;
 
 public class ControllerManagerImpl implements ControllerManager {
     UserController userController;
+    TransactionController transactionController;
     Manager manager;
 
     public ControllerManagerImpl(Manager manager) {
         this.manager = manager;
 
         userController = new UserController(manager);
+        transactionController = new TransactionController(manager);
     }
 
     @Override
     public UserController getUserController() {
         return userController;
+    }
+
+    @Override
+    public TransactionController getTransactionController() {
+        return transactionController;
     }
 
     @Override

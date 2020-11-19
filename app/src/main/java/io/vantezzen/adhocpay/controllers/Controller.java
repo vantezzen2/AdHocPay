@@ -1,7 +1,7 @@
 package io.vantezzen.adhocpay.controllers;
 
 /**
- * Controller: Controller der App, welcher einen bestimmten Bereich managed
+ * Controller: Controller der App, welcher einen bestimmten Bereich kontrolliert
  */
 public interface Controller {
     /**

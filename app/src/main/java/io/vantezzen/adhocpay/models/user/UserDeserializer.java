@@ -14,6 +14,11 @@ import java.lang.reflect.Type;
 public class UserDeserializer implements JsonDeserializer<User> {
     UserRepository repository;
 
+    /**
+     * Erzeuge einen Nutzer Deserializer
+     *
+     * @param repository Repository, welche für die Nutzerinstanzen genutzt werden soll
+     */
     public UserDeserializer(UserRepository repository) {
         this.repository = repository;
     }

@@ -7,6 +7,9 @@ import net.sharksystem.asap.android.apps.ASAPActivity;
 import io.vantezzen.adhocpay.AdHocPayApplication;
 
 public abstract class BaseActivity extends ASAPActivity {
+    /**
+     * Erzeuge eine neue BaseActivity Instanz.
+     */
     public BaseActivity() {
         super(AdHocPayApplication.getInstance());
     }
@@ -15,11 +18,12 @@ public abstract class BaseActivity extends ASAPActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AdHocPayApplication.getInstance().getManager().setupNetwork();
+        // Stelle sicher, dass unsere Verbindung zum Netzwerk steht
+        AdHocPayApplication.getManager().setupNetwork();
     }
 
     /**
-     * React to changes in transaction data
+     * Reagiere auf Änderungen in den Daten
      */
     abstract public void onDataChange();
 }

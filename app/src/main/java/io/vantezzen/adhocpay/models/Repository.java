@@ -3,6 +3,11 @@ package io.vantezzen.adhocpay.models;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Repository: Sammelt Instanzen eines Models
+ *
+ * @param <Model> Model, welches gespeichert wird
+ */
 public abstract class Repository<Model> {
     private List<Model> models;
 

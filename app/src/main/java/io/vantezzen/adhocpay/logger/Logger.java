@@ -1,7 +1,7 @@
 package io.vantezzen.adhocpay.logger;
 
 /**
- * Logger: Einfacher Logger, welcher Ausgaben erzeugt
+ * Logger: Einfacher Logger, welcher Ausgaben auf einer beliebigen Platform erzeugt
  */
 public interface Logger {
     /**

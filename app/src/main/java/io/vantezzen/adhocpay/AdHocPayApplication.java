@@ -17,8 +17,8 @@ import io.vantezzen.adhocpay.application.ManagerImpl;
  * Sie setzt den Manager und die ASAPCommunication Verbindung auf, damit die Applikation starten kann
  */
 public class AdHocPayApplication extends ASAPApplication {
-    private static AdHocPayApplication instance;
-    private Manager manager;
+    private static AdHocPayApplication instance = null;
+    private static Manager manager;
     private NetworkCommunicator communicator;
 
     private boolean isAsapSetup = false;
@@ -32,6 +32,10 @@ public class AdHocPayApplication extends ASAPApplication {
      */
     protected AdHocPayApplication(Collection<CharSequence> supportedFormats, Activity initialActivity) {
         super(supportedFormats, initialActivity);
+
+        if (AdHocPayApplication.instance != null) {
+            throw new IllegalStateException("Singleton kann nicht erneut initialisiert werden!");
+        }
 
         manager = new ManagerImpl(this);
     }
@@ -63,12 +67,7 @@ public class AdHocPayApplication extends ASAPApplication {
         return instance;
     }
 
-    /**
-     * Liefert die aktuelle Manager instanz für diese App
-     *
-     * @return Manager
-     */
-    public Manager getManager() {
+    public static Manager getManager() {
         return manager;
     }
 }

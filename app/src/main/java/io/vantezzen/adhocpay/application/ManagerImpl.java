@@ -22,19 +22,27 @@ import io.vantezzen.adhocpay.models.user.UserRepository;
 import io.vantezzen.adhocpay.network.ASAPCommunication;
 import io.vantezzen.adhocpay.network.NetworkCommunicator;
 
+/**
+ * Implementation eines AdHoc Pay Managers für die App
+ */
 public class ManagerImpl implements Manager {
+    // Aktuelle Instanzen
     private final ASAPApplication application;
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
     private final ControllerManager controllerManager;
     private final Logger logger;
+    private final NetworkCommunicator communicator;
 
+    // Statische Daten für ASAP
     public static final String ASAP_APPNAME = "application/x-AdHocPay";
     public static final String DEFAULT_URI = "adhocpay://data";
-    private final NetworkCommunicator communicator;
+
+    // State
     private boolean isAsapSetup = false;
 
     public ManagerImpl(ASAPApplication application) {
+        // Setze benötigte Instanzen auf
         this.application = application;
         this.userRepository = new UserRepository();
         this.transactionRepository = new TransactionRepository();

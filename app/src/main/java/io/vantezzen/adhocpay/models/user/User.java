@@ -8,9 +8,8 @@ import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 
 public class User implements Model {
+    // Daten des Models
     private String username;
-
-    private final String LOG_START = "Model:User";
 
     public User(String username, UserRepository repository) {
         repository.add(this);

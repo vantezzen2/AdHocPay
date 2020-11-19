@@ -26,7 +26,7 @@ public class StartupActivity extends AppCompatActivity {
         this.finish();
 
         Intent intent;
-        Manager manager = AdHocPayApplication.getInstance().getManager();
+        Manager manager = AdHocPayApplication.getManager();
         if (manager.getMe() != null) {
             // Nutzer hat sich bereits registriert - starte den Hauptbildschirm
             intent = new Intent(this, MainActivity.class);

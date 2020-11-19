@@ -15,7 +15,8 @@ import io.vantezzen.adhocpay.models.user.UserRepository;
 import io.vantezzen.adhocpay.network.NetworkCommunicator;
 
 /**
- * Application Manager: Verwalte die einzelnen Komponenten der Applikation
+ * Application Manager: Verwalte die einzelnen Komponenten der Applikation und sorgt für
+ * einfache Kommunikation zwischen den Komponenten
  */
 public interface Manager {
     // Weiterleitungen an die Application
@@ -34,7 +35,7 @@ public interface Manager {
     Activity getActivity();
 
     /**
-     * Sendet eine Nachricht an die aktuelle View, dass die angezeigten Daten aktualisiert
+     * Sendet die Nachricht an die aktuelle View, dass die angezeigten Daten aktualisiert
      * werden müssen.
      * Dies tritt in der Regel auf, wenn eine neue Transaktion empfangen wird
      */
@@ -72,7 +73,7 @@ public interface Manager {
     String getOwnerId();
 
     /**
-     * Liefert die ASAP Storage
+     * Liefert die ASAP Storage Instanz
      *
      * @param format Format des Storage
      * @return Storage
@@ -92,6 +93,10 @@ public interface Manager {
      * Setze das Netzwerk auf
      * Dies setzt bei ASAP vorraus, dass wir uns in einer ASAPActivity befinden, deswegen
      * muss dieser Schritt unabhängig vom Konstruktor geschehen
+     *
+     * Achtung: Diese Methode kann im Laufe des App Lifecycles mehrmals aufgerufen werden.
+     * Sie sollte daher selbstständig in Erinnerung halten, ob das Netzwerk nicht bereits
+     * aufgesetzt wurde.
      */
     void setupNetwork();
 

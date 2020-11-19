@@ -2,6 +2,9 @@ package io.vantezzen.adhocpay.controllers;
 
 import io.vantezzen.adhocpay.application.Manager;
 
+/**
+ * UserController: Managed mit den Umgang mit Nutzern
+ */
 public class UserController extends BaseController {
     public UserController(Manager manager) {
         super(manager);
@@ -25,6 +28,6 @@ public class UserController extends BaseController {
 
     @Override
     public void onDataChange() {
-
+        // Tue nichts
     }
 }
