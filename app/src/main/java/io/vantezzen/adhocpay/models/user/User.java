@@ -68,6 +68,11 @@ public class User implements Model {
         return Math.round(credit * 100.0) / 100.0f;
     }
 
+    /**
+     * Liefert den Nutzernamen dieses Nutzers
+     *
+     * @return Nutzername
+     */
     public String getUsername() {
         return username;
     }

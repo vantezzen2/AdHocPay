@@ -11,7 +11,7 @@ import io.vantezzen.adhocpay.Validation;
  * @param <Model> Model, welches gespeichert wird
  */
 public abstract class Repository<Model> {
-    private List<Model> models;
+    protected List<Model> models;
 
     /**
      * Initialisiere die Repository

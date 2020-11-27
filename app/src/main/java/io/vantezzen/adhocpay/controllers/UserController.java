@@ -2,6 +2,7 @@ package io.vantezzen.adhocpay.controllers;
 
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.models.user.User;
 
 /**
  * UserController: Managed mit den Umgang mit Nutzern
@@ -27,6 +28,16 @@ public class UserController extends BaseController {
 
         manager.storeSetting("username", username);
         return true;
+    }
+
+    /**
+     * Liefert einen Nutzer für seine Nutzerinformationen
+     *
+     * @param username Nutzername des Nutzers
+     * @return Nutzer
+     */
+    public User getUser(String username) {
+        return null;
     }
 
     @Override

@@ -69,6 +69,11 @@ public class AdHocPayApplication extends ASAPApplication {
         return instance;
     }
 
+    /**
+     * get the current Application Manager
+     *
+     * @return Manager
+     */
     public static Manager getManager() {
         return manager;
     }
