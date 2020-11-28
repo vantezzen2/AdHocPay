@@ -1,6 +1,6 @@
 package io.vantezzen.adhocpay.controllers;
 
-import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.manager.Manager;
 
 public class ControllerManagerImpl implements ControllerManager {
     UserController userController;

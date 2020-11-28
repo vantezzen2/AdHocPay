@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
-import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.manager.Manager;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.R;

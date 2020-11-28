@@ -1,4 +1,4 @@
-package io.vantezzen.adhocpay.application;
+package io.vantezzen.adhocpay.manager;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -10,7 +10,6 @@ import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
 
-import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.activities.BaseActivity;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
@@ -48,7 +47,7 @@ public class ManagerImpl implements Manager {
         // Setze benötigte Instanzen auf
         this.application = application;
         this.userRepository = new UserRepository();
-        this.transactionRepository = new TransactionRepository();
+        this.transactionRepository = new TransactionRepository(this.userRepository);
         this.controllerManager = new ControllerManagerImpl(this);
         this.logger = new AndroidLogger();
         this.communicator = new ASAPCommunication(this, controllerManager);

@@ -1,7 +1,7 @@
 package io.vantezzen.adhocpay.controllers;
 
 import io.vantezzen.adhocpay.Validation;
-import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.manager.Manager;
 import io.vantezzen.adhocpay.models.user.User;
 
 /**

@@ -1,22 +1,29 @@
 package io.vantezzen.adhocpay.models.transaction;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.models.Model;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
+import io.vantezzen.adhocpay.utils.LocalDateTimeSerializerDeserializer;
 
 public class Transaction implements Model {
     // Interne Variablen
     private User fromUser;
     private User toUser;
     private float amount;
-    private Date time;
+    private LocalDateTime time;
 
     private final String LOG_START = "Model:Transaction";
+
+    public Transaction() {
+        time = LocalDateTime.now();
+    }
 
     /**
      * Erzeuge eine neue Transaktion
@@ -27,7 +34,7 @@ public class Transaction implements Model {
      * @param time Zeitpunkt der Transaktion
      * @param repository Transaktions Repository
      */
-    public Transaction(User fromUser, User toUser, float amount, Date time, TransactionRepository repository) throws NullPointerException {
+    public Transaction(User fromUser, User toUser, float amount, LocalDateTime time, TransactionRepository repository) throws NullPointerException {
         Validation.notNull(fromUser);
         Validation.notNull(toUser);
         Validation.notNull(time);
@@ -51,7 +58,7 @@ public class Transaction implements Model {
      * @param users Nutzerrepository
      * @param repository Transaktionsrepository
      */
-    public Transaction(String fromUser, String toUser, float amount, Date time, UserRepository users, TransactionRepository repository) {
+    public Transaction(String fromUser, String toUser, float amount, LocalDateTime time, UserRepository users, TransactionRepository repository) {
         this(users.getUserByName(fromUser), users.getUserByName(toUser), amount, time, repository);
     }
 
@@ -68,7 +75,7 @@ public class Transaction implements Model {
         return amount;
     }
 
-    public Date getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
@@ -78,7 +85,10 @@ public class Transaction implements Model {
      * @return JSON
      */
     public String toJson() {
-        Gson gson = new Gson();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializerDeserializer());
+
+        Gson gson = gsonBuilder.create();
         String json = gson.toJson(this);
 
         return json;

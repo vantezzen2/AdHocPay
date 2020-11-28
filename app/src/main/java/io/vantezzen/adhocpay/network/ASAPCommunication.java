@@ -16,6 +16,7 @@ import net.sharksystem.asap.android.apps.ASAPActivity;
 import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 
 import io.vantezzen.adhocpay.Validation;
@@ -23,8 +24,8 @@ import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserDeserializer;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
-import io.vantezzen.adhocpay.application.Manager;
-import io.vantezzen.adhocpay.controllers.Controller;
+import io.vantezzen.adhocpay.manager.Manager;
+import io.vantezzen.adhocpay.utils.LocalDateTimeSerializerDeserializer;
 
 /**
  * ASAPCommunication: Handle communicating with the ASAP framework
@@ -63,13 +64,22 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         this.id = ASAP.createUniqueID();
 
         // Setze ASAPStorage auf
-        String folder = application.getApplicationRootFolder(application.getAppName());
-        try {
-            asapStorage = ASAPEngineFS.getASAPStorage(
+        /*String folder = application.getApplicationRootFolder(application.getAppName());*/
+        /*try {
+            *//*asapStorage = ASAPEngineFS.getASAPStorage(
                     application.getOwnerId(),
                     folder,
                     application.getAppName()
-            );
+            );*//*
+        } catch (IOException e) {
+            // TODO: Handle these
+            e.printStackTrace();
+        } catch (ASAPException e) {
+            e.printStackTrace();
+        }*/
+
+        try {
+            asapStorage = application.getAsapStorage(application.getAppName());
         } catch (IOException e) {
             // TODO: Handle these
             e.printStackTrace();
@@ -77,16 +87,9 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             e.printStackTrace();
         }
 
-        if (asapStorage == null) {
-            try {
-                asapStorage = application.getAsapStorage(application.getAppName());
-            } catch (IOException e) {
-                // TODO: Handle these
-                e.printStackTrace();
-            } catch (ASAPException e) {
-                e.printStackTrace();
-            }
-        }
+        /*if (asapStorage == null) {
+
+        }*/
 
         Activity activity = application.getActivity();
         if (!(activity instanceof ASAPActivity)) {
@@ -98,7 +101,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         ASAPActivity act = (ASAPActivity) application.getActivity();
         act.startBluetooth();
         act.startBluetoothDiscovery();
-        act.startBluetoothDiscoverable();
+        /*act.startBluetoothDiscoverable();*/
 
         this.application.log(LOG_START, "Communication started");
 
@@ -116,11 +119,9 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         try {
             channel = asapStorage.getChannel(application.getDefaultUri());
             messages = channel.getMessages();
-        } catch (ASAPException e) {
+        } catch (IOException | ASAPException e) {
             // TODO: Handle these
-            e.printStackTrace();
-            return;
-        } catch (IOException e) {
+            Log.d(LOG_START, e.getMessage());
             e.printStackTrace();
             return;
         }
@@ -185,7 +186,11 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             if(msg.charAt(0) != '{') continue;
 
             // Füge die Transaktion hinzu
-            Gson gson = new GsonBuilder().registerTypeAdapter(User.class, new UserDeserializer(application.getUserRepository())).create();
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializerDeserializer());
+            gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer(application.getUserRepository()));
+
+            Gson gson = gsonBuilder.create();
             Transaction transaction = gson.fromJson(msg, Transaction.class);
             application.getTransactionRepository().add(transaction);
         }

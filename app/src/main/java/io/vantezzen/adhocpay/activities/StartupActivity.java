@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
-import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.manager.Manager;
 
 /**
  * StartupActivity: Startet die AdHoc Verbindung und leitet auf die richtige

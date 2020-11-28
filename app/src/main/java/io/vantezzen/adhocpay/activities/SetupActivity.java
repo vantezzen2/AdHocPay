@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
-import io.vantezzen.adhocpay.application.Manager;
+import io.vantezzen.adhocpay.manager.Manager;
 
 public class SetupActivity extends BaseActivity {
     @Override

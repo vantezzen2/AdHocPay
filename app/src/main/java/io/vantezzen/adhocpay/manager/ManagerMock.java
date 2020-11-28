@@ -1,4 +1,4 @@
-package io.vantezzen.adhocpay.application;
+package io.vantezzen.adhocpay.manager;
 
 import android.app.Activity;
 
@@ -33,7 +33,7 @@ public class ManagerMock implements Manager {
         // Setze benötigte Instanzen auf
         // Wir können die echten Repositories nutzen, da diese angekapselt sind
         this.userRepository = new UserRepository();
-        this.transactionRepository = new TransactionRepository();
+        this.transactionRepository = new TransactionRepository(this.userRepository);
 
         this.controllerManager = new ControllerManagerImpl(this);
         this.communicator = new MockCommunicator();

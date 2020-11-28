@@ -1,4 +1,4 @@
-package io.vantezzen.adhocpay.application;
+package io.vantezzen.adhocpay.manager;
 
 import android.app.Activity;
 

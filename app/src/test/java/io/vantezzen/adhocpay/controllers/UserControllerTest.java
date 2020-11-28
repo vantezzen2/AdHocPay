@@ -2,8 +2,8 @@ package io.vantezzen.adhocpay.controllers;
 
 import org.junit.Test;
 
-import io.vantezzen.adhocpay.application.Manager;
-import io.vantezzen.adhocpay.application.ManagerMock;
+import io.vantezzen.adhocpay.manager.Manager;
+import io.vantezzen.adhocpay.manager.ManagerMock;
 
 import static org.junit.Assert.*;
 

@@ -7,10 +7,9 @@ import net.sharksystem.asap.android.apps.ASAPApplication;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.vantezzen.adhocpay.network.ASAPCommunication;
 import io.vantezzen.adhocpay.network.NetworkCommunicator;
-import io.vantezzen.adhocpay.application.Manager;
-import io.vantezzen.adhocpay.application.ManagerImpl;
+import io.vantezzen.adhocpay.manager.Manager;
+import io.vantezzen.adhocpay.manager.ManagerImpl;
 
 /**
  * AdHocPayApplication: Dies ist die Basisklasse von AdHoc Pay.
@@ -53,7 +52,7 @@ public class AdHocPayApplication extends ASAPApplication {
             Collection<CharSequence> formats = new ArrayList<>();
             formats.add(ManagerImpl.ASAP_APPNAME);
 
-            new AdHocPayApplication(formats, initialActivity);
+            AdHocPayApplication.instance = new AdHocPayApplication(formats, initialActivity);
             AdHocPayApplication.instance.startASAPApplication();
         }
 
