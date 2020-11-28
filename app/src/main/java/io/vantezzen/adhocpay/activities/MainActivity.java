@@ -1,5 +1,6 @@
 package io.vantezzen.adhocpay.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -62,5 +63,15 @@ public class MainActivity extends BaseActivity {
         Transaction test = controllerManager.getTransactionController().sendTransaction(15.99f, "Hans");
 
         displayDynamicData();
+    }
+
+    /**
+     * Öffne die Seite, um Transaktionen zu senden
+     *
+     * @param v Button
+     */
+    public void onSendTransaction(View v) {
+        Intent i = new Intent(this, SendTransactionActivity.class);
+        this.startActivity(i);
     }
 }

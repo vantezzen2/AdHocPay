@@ -7,4 +7,8 @@
     <string name="home_credit_title">Dein Guthaben</string>
     <string name="setup_error_empty">Bitte wähle einen Nutzername</string>
     <string name="startup_image_desc">Logo</string>
+    <string name="send_transaction_header">Guthaben senden</string>
+    <string name="send_transaction_info">Lasse dir den Nutzernamen eines anderen Nutzers geben, um Geld an diesen zu senden.</string>
+    <string name="send_transaction_value">Wert in €</string>
+    <string name="send_transaction_send">Guthaben senden</string>
 </resources>
