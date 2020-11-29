@@ -2,6 +2,7 @@ package io.vantezzen.adhocpay.controllers;
 
 import org.junit.Test;
 
+import io.vantezzen.adhocpay.exceptions.InvalidTransactionException;
 import io.vantezzen.adhocpay.manager.Manager;
 import io.vantezzen.adhocpay.manager.ManagerMock;
 
@@ -9,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class TransactionControllerTest {
     @Test
-    public void testKannTransaktionSenden() {
+    public void testKannTransaktionSenden() throws InvalidTransactionException {
         Manager m = new ManagerMock();
         TransactionController t = new TransactionController(m);
 
@@ -30,7 +31,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void testFailsWennUngueltigerEmpfaengerAngegebenWird() {
+    public void testFailsWennUngueltigerEmpfaengerAngegebenWird() throws InvalidTransactionException {
         Manager m = new ManagerMock();
         TransactionController t = new TransactionController(m);
 
@@ -47,7 +48,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void testFailsWennNegativerWertAngegebenWird() {
+    public void testFailsWennNegativerWertAngegebenWird() throws InvalidTransactionException {
         Manager m = new ManagerMock();
         TransactionController t = new TransactionController(m);
 

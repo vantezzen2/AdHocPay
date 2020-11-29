@@ -18,7 +18,8 @@ import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 import io.vantezzen.adhocpay.utils.TransactionListRecyclerViewAdapter;
 
 public class MainActivity extends BaseActivity {
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
+    private TransactionListRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,9 @@ public class MainActivity extends BaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.transactionlist);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new TransactionListRecyclerViewAdapter(AdHocPayApplication.getManager().getTransactionRepository()));
+
+        recyclerViewAdapter = new TransactionListRecyclerViewAdapter(AdHocPayApplication.getManager().getTransactionRepository());
+        recyclerView.setAdapter(recyclerViewAdapter);
 
         displayDynamicData();
     }
@@ -49,25 +52,8 @@ public class MainActivity extends BaseActivity {
         TransactionRepository transactionRepository = manager.getTransactionRepository();
         text.setText(manager.getMe().getCredit(transactionRepository) + "€");
 
-        // Setup Recycler View
-
-        // TODO
-    }
-
-    /**
-     * Sende eine Beispieltransaktion
-     *
-     * @param v View
-     */
-    public void onSendExample(View v) {
-        ControllerManager controllerManager = AdHocPayApplication.getManager().getControllerManager();
-        try {
-            Transaction test = controllerManager.getTransactionController().sendTransaction(15.99f, "Hans");
-        } catch (InvalidTransactionException e) {
-            e.printStackTrace();
-        }
-
-        displayDynamicData();
+        // Aktualisiere den RecyclerView
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     /**
