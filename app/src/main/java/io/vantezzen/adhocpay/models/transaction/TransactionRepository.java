@@ -3,6 +3,7 @@ package io.vantezzen.adhocpay.models.transaction;
 import java.time.LocalDateTime;
 
 import io.vantezzen.adhocpay.Validation;
+import io.vantezzen.adhocpay.exceptions.InvalidTransactionException;
 import io.vantezzen.adhocpay.models.Repository;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
@@ -64,11 +65,17 @@ public class TransactionRepository extends Repository<Transaction> {
      * @param communicator Netzwerkkommunikation
      * @return Transaktion falls erfolgreich, sonst null
      */
-    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) throws NullPointerException, IllegalArgumentException {
+    public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) throws NullPointerException, IllegalArgumentException, InvalidTransactionException {
         Validation.notNull(sender);
         Validation.notNull(receiver);
         Validation.notNull(communicator);
-        Validation.greaterThanZero(amount);
+
+        if (amount <= 0) {
+            throw new InvalidTransactionException("Der Betrag müss größer als 0 sein");
+        }
+        if (Float.isNaN(amount)) {
+            throw new InvalidTransactionException("Bitte gebe einen gültigen Wert ein");
+        }
 
         Transaction transaction = new Transaction(sender, receiver, amount, LocalDateTime.now(), this);
 
@@ -76,6 +83,7 @@ public class TransactionRepository extends Repository<Transaction> {
         if (success) {
             return transaction;
         }
-        return null;
+
+        throw new InvalidTransactionException("Die Transaktion konnte nicht gesendet werden. Versuche es später erneut");
     }
 }

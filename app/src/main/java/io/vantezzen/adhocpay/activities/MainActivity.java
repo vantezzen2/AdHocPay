@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
+import io.vantezzen.adhocpay.exceptions.InvalidTransactionException;
 import io.vantezzen.adhocpay.manager.Manager;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
@@ -60,7 +61,11 @@ public class MainActivity extends BaseActivity {
      */
     public void onSendExample(View v) {
         ControllerManager controllerManager = AdHocPayApplication.getManager().getControllerManager();
-        Transaction test = controllerManager.getTransactionController().sendTransaction(15.99f, "Hans");
+        try {
+            Transaction test = controllerManager.getTransactionController().sendTransaction(15.99f, "Hans");
+        } catch (InvalidTransactionException e) {
+            e.printStackTrace();
+        }
 
         displayDynamicData();
     }

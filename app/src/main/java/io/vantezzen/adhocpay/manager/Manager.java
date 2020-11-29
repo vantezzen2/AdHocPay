@@ -127,6 +127,7 @@ public interface Manager {
 
     /**
      * Liefert den aktuellen Nutzer
+     * Diese Funktion sollte null liefern, falls der Nutzer noch nicht registriert ist
      *
      * @return Nutzer
      */
