@@ -37,7 +37,6 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     private ASAPStorage asapStorage = null;
 
     private String LOG_START = "ASAPCommunication";
-    private String id;
 
     /**
      * Setze eine neue ASAPCommunication Klasse auf
@@ -60,24 +59,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             return;
         }
 
-        // Setze ASAP auf
-        this.id = ASAP.createUniqueID();
-
         // Setze ASAPStorage auf
-        /*String folder = application.getApplicationRootFolder(application.getAppName());*/
-        /*try {
-            *//*asapStorage = ASAPEngineFS.getASAPStorage(
-                    application.getOwnerId(),
-                    folder,
-                    application.getAppName()
-            );*//*
-        } catch (IOException e) {
-            // TODO: Handle these
-            e.printStackTrace();
-        } catch (ASAPException e) {
-            e.printStackTrace();
-        }*/
-
         try {
             asapStorage = application.getAsapStorage(application.getAppName());
         } catch (IOException e) {
@@ -87,21 +69,16 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             e.printStackTrace();
         }
 
-        /*if (asapStorage == null) {
-
-        }*/
-
         Activity activity = application.getActivity();
         if (!(activity instanceof ASAPActivity)) {
             this.application.log(LOG_START, "Not currently in a ASAP Activity");
-            // TODO: Handle this
-            return;
+            // TODO: Handle this?
+        } else {
+            ASAPActivity act = (ASAPActivity) application.getActivity();
+            act.startBluetooth();
+            act.startBluetoothDiscovery();
+            /*act.startBluetoothDiscoverable();*/
         }
-
-        ASAPActivity act = (ASAPActivity) application.getActivity();
-        act.startBluetooth();
-        act.startBluetoothDiscovery();
-        /*act.startBluetoothDiscoverable();*/
 
         this.application.log(LOG_START, "Communication started");
 
