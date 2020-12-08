@@ -1,12 +1,15 @@
 package io.vantezzen.adhocpay;
 
 import android.app.Activity;
+import android.util.Log;
 
 import net.sharksystem.asap.android.apps.ASAPApplication;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import io.vantezzen.adhocpay.manager.ManagerMock;
 import io.vantezzen.adhocpay.network.NetworkCommunicator;
 import io.vantezzen.adhocpay.manager.Manager;
 import io.vantezzen.adhocpay.manager.ManagerImpl;
@@ -19,6 +22,7 @@ public class AdHocPayApplication extends ASAPApplication {
     private static AdHocPayApplication instance = null;
     private static Manager manager;
     private NetworkCommunicator communicator;
+    private static boolean isTesting = false;
 
     private boolean isAsapSetup = false;
 
@@ -46,6 +50,7 @@ public class AdHocPayApplication extends ASAPApplication {
      * @return Current Application instance
      */
     public static AdHocPayApplication initializeApplication(Activity initialActivity) throws NullPointerException {
+        Log.d("AHP", "Starte App");
         if (AdHocPayApplication.instance == null) {
             Validation.notNull(initialActivity);
 
@@ -57,6 +62,18 @@ public class AdHocPayApplication extends ASAPApplication {
         }
 
         return AdHocPayApplication.instance;
+    }
+
+    public static void useTestApplication() {
+        System.out.println(
+                "ACHTUNG: AdHoc Pay wurde im Testmodus gestartet. Dieser ist nur für Software Tests gedacht."
+        );
+
+        isTesting = true;
+        manager = new ManagerMock();
+
+        // Erstelle eine Mockinstanz von ASAPApplication
+        instance = Mockito.mock(AdHocPayApplication.class);
     }
 
     /**
@@ -75,5 +92,9 @@ public class AdHocPayApplication extends ASAPApplication {
      */
     public static Manager getManager() {
         return manager;
+    }
+
+    public static boolean isTesting() {
+        return isTesting;
     }
 }

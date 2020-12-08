@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
@@ -20,7 +21,11 @@ public class StartupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_startup);
 
-        AdHocPayApplication.initializeApplication(this);
+        Log.d("SetupActivity", "Starte App");
+
+        if (!AdHocPayApplication.isTesting()) {
+            AdHocPayApplication.initializeApplication(this);
+        }
 
         // Starte die App
         this.finish();

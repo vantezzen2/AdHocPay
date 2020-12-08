@@ -35,7 +35,10 @@ public class ManagerMock implements Manager {
         this.userRepository = new UserRepository();
         this.transactionRepository = new TransactionRepository(this.userRepository);
 
+        // Wir können die echten Controller nutzen
         this.controllerManager = new ControllerManagerImpl(this);
+
+        // Wir müssen einen Mock Communicator nutzen
         this.communicator = new MockCommunicator();
     }
 

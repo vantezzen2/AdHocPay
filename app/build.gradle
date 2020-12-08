@@ -32,9 +32,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "org.mockito:mockito-core:2.7.22";
+    implementation 'org.mockito:mockito-android:2.7.22'
     implementation fileTree(dir: 'aars', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker:2.2.0'
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 }
