@@ -51,9 +51,11 @@ public class TransactionRepository extends Repository<Transaction> {
                 this
         );
     }
-    public TransactionRepository(UserRepository u) {
+    public TransactionRepository(UserRepository u, boolean addTestData) {
         super();
-        createSomeTestData(u);
+        if (addTestData) {
+            createSomeTestData(u);
+        }
     }
 
     /**

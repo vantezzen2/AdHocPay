@@ -47,7 +47,7 @@ public class ManagerImpl implements Manager {
         // Setze benötigte Instanzen auf
         this.application = application;
         this.userRepository = new UserRepository();
-        this.transactionRepository = new TransactionRepository(this.userRepository);
+        this.transactionRepository = new TransactionRepository(this.userRepository, false);
         this.controllerManager = new ControllerManagerImpl(this);
         this.logger = new AndroidLogger();
         this.communicator = new ASAPCommunication(this, controllerManager);

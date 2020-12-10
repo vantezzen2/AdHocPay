@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class UserControllerTest {
     @Test
     public void testKannRegistrieren() {
-        Manager m = new ManagerMock();
+        Manager m = new ManagerMock(false);
         UserController c = new UserController(m);
 
         boolean erfolg = c.registerUser("karl");
@@ -20,7 +20,7 @@ public class UserControllerTest {
 
     @Test
     public void testKannNichtMehrmalsRegistrieren() {
-        Manager m = new ManagerMock();
+        Manager m = new ManagerMock(false);
         UserController c = new UserController(m);
 
         c.registerUser("peter");
@@ -32,7 +32,7 @@ public class UserControllerTest {
 
     @Test
     public void testFailsWennNullAlsNameGegebenWird() {
-        Manager m = new ManagerMock();
+        Manager m = new ManagerMock(false);
         UserController c = new UserController(m);
 
         try {

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class TransactionControllerTest {
     @Test
     public void testKannTransaktionSenden() throws InvalidTransactionException {
-        Manager m = new ManagerMock();
+        Manager m = new ManagerMock(false);
         TransactionController t = new TransactionController(m);
 
         t.sendTransaction(19.99f, "karl");
@@ -32,7 +32,7 @@ public class TransactionControllerTest {
 
     @Test
     public void testFailsWennUngueltigerEmpfaengerAngegebenWird() throws InvalidTransactionException {
-        Manager m = new ManagerMock();
+        Manager m = new ManagerMock(false);
         TransactionController t = new TransactionController(m);
 
         try {
@@ -49,13 +49,13 @@ public class TransactionControllerTest {
 
     @Test
     public void testFailsWennNegativerWertAngegebenWird() throws InvalidTransactionException {
-        Manager m = new ManagerMock();
+        Manager m = new ManagerMock(false);
         TransactionController t = new TransactionController(m);
 
         try {
             t.sendTransaction(-19.99f, "karl");
             fail("Ungültige Transaktion wurde gesendet");
-        } catch (IllegalArgumentException e) {}
+        } catch (InvalidTransactionException e) {}
 
         // Darf keine Transaktion hinzufügen
         assertEquals(

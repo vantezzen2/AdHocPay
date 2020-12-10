@@ -29,11 +29,11 @@ public class ManagerMock implements Manager {
     private final NetworkCommunicator communicator;
     private Map<String, String> settings = new HashMap<>();
 
-    public ManagerMock() {
+    public ManagerMock(boolean addTestData) {
         // Setze benötigte Instanzen auf
         // Wir können die echten Repositories nutzen, da diese abgekapselt sind
         this.userRepository = new UserRepository();
-        this.transactionRepository = new TransactionRepository(this.userRepository);
+        this.transactionRepository = new TransactionRepository(this.userRepository, addTestData);
 
         // Wir können die echten Controller nutzen
         this.controllerManager = new ControllerManagerImpl(this);

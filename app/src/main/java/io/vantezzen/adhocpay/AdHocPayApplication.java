@@ -64,16 +64,20 @@ public class AdHocPayApplication extends ASAPApplication {
         return AdHocPayApplication.instance;
     }
 
-    public static void useTestApplication() {
+    public static void useTestApplication(boolean addTestdata) {
         System.out.println(
                 "ACHTUNG: AdHoc Pay wurde im Testmodus gestartet. Dieser ist nur für Software Tests gedacht."
         );
 
         isTesting = true;
-        manager = new ManagerMock();
+        manager = new ManagerMock(addTestdata);
 
         // Erstelle eine Mockinstanz von ASAPApplication
         instance = Mockito.mock(AdHocPayApplication.class);
+    }
+
+    public static void useTestApplication() {
+        useTestApplication(true);
     }
 
     /**
