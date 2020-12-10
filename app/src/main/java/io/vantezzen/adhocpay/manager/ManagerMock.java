@@ -31,7 +31,7 @@ public class ManagerMock implements Manager {
 
     public ManagerMock() {
         // Setze benötigte Instanzen auf
-        // Wir können die echten Repositories nutzen, da diese angekapselt sind
+        // Wir können die echten Repositories nutzen, da diese abgekapselt sind
         this.userRepository = new UserRepository();
         this.transactionRepository = new TransactionRepository(this.userRepository);
 

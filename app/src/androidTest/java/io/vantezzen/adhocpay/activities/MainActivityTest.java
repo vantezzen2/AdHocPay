@@ -14,6 +14,9 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
+
+import java.time.LocalDateTime;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -28,8 +31,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
+import io.vantezzen.adhocpay.RecyclerViewItemCountAssertion;
 import io.vantezzen.adhocpay.manager.ManagerMock;
+import io.vantezzen.adhocpay.models.transaction.Transaction;
+import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
+import io.vantezzen.adhocpay.models.user.UserRepository;
 
+import static io.vantezzen.adhocpay.Utils.atPositionOnView;
 import static org.junit.Assert.*;
 
 @LargeTest
@@ -45,7 +53,20 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testCanShowRelevantData() {
+    public void testCanShowData() {
+        // Zeige Credits an
         onView(withId(R.id.credits)).check(matches(isDisplayed()));
+        onView(withId(R.id.credits)).check(matches(withText("50.0€")));
+
+        // Zeigt Transaktionen an
+        onView(withId(R.id.transactionlist)).check(matches(isDisplayed()));
+
+        // Muss die richtige Anzahl an Transaktionen haben
+        onView(withId(R.id.transactionlist)).check(new RecyclerViewItemCountAssertion(4));
+
+        // Teste den Inhalt der ersten Transaktion
+        onView(withId(R.id.transactionlist)).check(matches(atPositionOnView(0, withText("heinrich 👉 marko"), R.id.sender_receiver)));
+        onView(withId(R.id.transactionlist)).check(matches(atPositionOnView(0, withText("100.0€"), R.id.amount)));
+        onView(withId(R.id.transactionlist)).check(matches(atPositionOnView(0, withText("0 minutes ago"), R.id.time_ago)));
     }
 }

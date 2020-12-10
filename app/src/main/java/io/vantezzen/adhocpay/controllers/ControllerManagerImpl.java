@@ -27,5 +27,6 @@ public class ControllerManagerImpl implements ControllerManager {
     @Override
     public void onDataChange() {
         userController.onDataChange();
+        transactionController.onDataChange();
     }
 }

@@ -52,6 +52,7 @@ public class TransactionController extends BaseController {
 
     @Override
     public void onDataChange() {
-        // Tue nichts
+        // Aktualisiere die View
+        manager.refreshView();
     }
 }
