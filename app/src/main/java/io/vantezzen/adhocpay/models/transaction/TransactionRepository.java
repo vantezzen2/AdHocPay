@@ -88,4 +88,20 @@ public class TransactionRepository extends Repository<Transaction> {
 
         throw new InvalidTransactionException("Die Transaktion konnte nicht gesendet werden. Versuche es später erneut");
     }
+
+    /**
+     * Empfange eine Transaktion vom Netzwerk.
+     * Dies prüft zuerst, ob die Transaktion gültig ist und fügt diese danach zur Repository hinzu
+     *
+     * @param t Transaktion
+     * @return true, wenn die Nachricht gültig ist
+     */
+    public boolean receiveTransaction(Transaction t) {
+        if (t.getFromUser().getCredit(this) < t.getAmount()) {
+            return false;
+        }
+
+        add(t);
+        return true;
+    }
 }

@@ -121,16 +121,15 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         byte[] message = stringMessage.getBytes();
 
-        Activity activity = application.getActivity();
-
-        if (!(activity instanceof ASAPActivity)) {
+        if (!(application.getActivity() instanceof ASAPActivity)) {
             // We cannot transmit on non-asap activities
             this.application.log(LOG_START, "Can't transmit message as we aren't in an ASAP Activity");
             return false;
         }
 
         try {
-            ((ASAPActivity) activity).sendASAPMessage(appName, uri, message, true);
+            ASAPActivity asapActivity = (ASAPActivity) application.getActivity();
+            asapActivity.sendASAPMessage(appName, uri, message, true);
         } catch(ASAPException e) {
             this.application.log(LOG_START, "Error while sending message: " + e);
             return false;
@@ -169,7 +168,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
             Gson gson = gsonBuilder.create();
             Transaction transaction = gson.fromJson(msg, Transaction.class);
-            application.getTransactionRepository().add(transaction);
+            application.getTransactionRepository().receiveTransaction(transaction);
         }
 
         this.application.log(LOG_START, "Messages received");
