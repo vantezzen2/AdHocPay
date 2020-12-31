@@ -22,6 +22,7 @@ public class StartupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_startup);
 
         Log.d("SetupActivity", "Starte App");
+        Log.d("SetupActivity", "Ist Testing: " + (AdHocPayApplication.isTesting() ? "y" : "n"));
 
         if (!AdHocPayApplication.isTesting()) {
             AdHocPayApplication.initializeApplication(this);
