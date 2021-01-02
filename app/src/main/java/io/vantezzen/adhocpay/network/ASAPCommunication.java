@@ -13,7 +13,7 @@ import net.sharksystem.asap.ASAPException;
 import net.sharksystem.asap.ASAPMessages;
 import net.sharksystem.asap.ASAPStorage;
 import net.sharksystem.asap.android.apps.ASAPActivity;
-import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
+import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -77,7 +77,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             ASAPActivity act = (ASAPActivity) application.getActivity();
             act.startBluetooth();
             act.startBluetoothDiscovery();
-            /*act.startBluetoothDiscoverable();*/
+            act.startBluetoothDiscoverable();
         }
 
         this.application.log(LOG_START, "Communication started");
@@ -159,7 +159,10 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             this.application.log("ASAPCommunication", "message received: " + msg);
 
             // Teste, dass die Nachricht ein JSON String ist
-            if(msg.charAt(0) != '{') continue;
+            if(msg.charAt(0) != '{') {
+                Log.d("ASAPCommunication", "Got unknown msg: " + msg);
+                continue;
+            }
 
             // Füge die Transaktion hinzu
             GsonBuilder gsonBuilder = new GsonBuilder();

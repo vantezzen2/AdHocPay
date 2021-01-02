@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import net.sharksystem.asap.ASAPException;
 import net.sharksystem.asap.ASAPStorage;
 import net.sharksystem.asap.android.apps.ASAPApplication;
-import net.sharksystem.asap.android.apps.ASAPMessageReceivedListener;
+import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
 
