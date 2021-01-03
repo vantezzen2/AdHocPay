@@ -3,12 +3,6 @@ package io.vantezzen.adhocpay;
 import android.app.Activity;
 import android.util.Log;
 
-import net.sharksystem.asap.android.apps.ASAPApplication;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
 import io.vantezzen.adhocpay.manager.ManagerMock;
 import io.vantezzen.adhocpay.network.NetworkCommunicator;
 import io.vantezzen.adhocpay.manager.Manager;
@@ -18,24 +12,20 @@ import io.vantezzen.adhocpay.manager.ManagerImpl;
  * AdHocPayApplication: Dies ist die Basisklasse von AdHoc Pay.
  * Sie setzt den Manager und die ASAPCommunication Verbindung auf, damit die Applikation starten kann
  */
-public class AdHocPayApplication extends ASAPApplication {
+public class AdHocPayApplication {
     private static AdHocPayApplication instance = null;
     private static Manager manager;
     private NetworkCommunicator communicator;
     private static boolean isTesting = false;
 
-    private boolean isAsapSetup = false;
+
+    private static Activity activity;
 
     /**
      * Erstelle eine AdHocPayApplication instanz.
      * Diese Methode wird von initializeApplication aufgerufen
-     *
-     * @param supportedFormats Unterstützte Formate der ASAP App
-     * @param initialActivity Erste Activity
      */
-    protected AdHocPayApplication(Collection<CharSequence> supportedFormats, Activity initialActivity) {
-        super(supportedFormats, initialActivity);
-
+    protected AdHocPayApplication() {
         if (AdHocPayApplication.instance != null) {
             throw new IllegalStateException("Singleton kann nicht erneut initialisiert werden!");
         }
@@ -43,25 +33,17 @@ public class AdHocPayApplication extends ASAPApplication {
         manager = new ManagerImpl(this);
     }
 
-    /**
-     * Initialize the Application
-     *
-     * @param initialActivity
-     * @return Current Application instance
-     */
-    public static AdHocPayApplication initializeApplication(Activity initialActivity) throws NullPointerException {
+    public static AdHocPayApplication initializeApplication() {
         Log.d("AHP", "Starte App");
-        if (AdHocPayApplication.instance == null) {
-            Validation.notNull(initialActivity);
 
-            Collection<CharSequence> formats = new ArrayList<>();
-            formats.add(ManagerImpl.ASAP_APPNAME);
-
-            AdHocPayApplication.instance = new AdHocPayApplication(formats, initialActivity);
-            AdHocPayApplication.instance.startASAPApplication();
+        if (instance != null) {
+            Log.d("AHP", "App mehrmals gestartet - ignoriere");
+            return instance;
         }
 
-        return AdHocPayApplication.instance;
+        instance = new AdHocPayApplication();
+        manager = new ManagerImpl(instance);
+        return instance;
     }
 
     public static void useTestApplication(boolean addTestdata) {
@@ -71,9 +53,6 @@ public class AdHocPayApplication extends ASAPApplication {
 
         isTesting = true;
         manager = new ManagerMock(addTestdata);
-
-        // Erstelle eine Mockinstanz von ASAPApplication
-        instance = Mockito.mock(AdHocPayApplication.class);
     }
 
     public static void useTestApplication() {
@@ -98,7 +77,21 @@ public class AdHocPayApplication extends ASAPApplication {
         return manager;
     }
 
+    /**
+     * Find out of the Application is currently started in test mode
+     *
+     * @return Test mode activated?
+     */
     public static boolean isTesting() {
         return isTesting;
+    }
+
+
+    public static Activity getActivity() {
+        return activity;
+    }
+
+    public static void setActivity(Activity activity) {
+        AdHocPayApplication.activity = activity;
     }
 }

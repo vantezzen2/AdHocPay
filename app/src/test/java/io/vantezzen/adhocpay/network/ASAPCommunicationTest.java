@@ -10,7 +10,6 @@ import static org.mockito.ArgumentMatchers.any;
 
 import net.sharksystem.asap.ASAPException;
 import net.sharksystem.asap.android.apps.ASAPActivity;
-import net.sharksystem.asap.apps.mock.ASAPSessionMock;
 
 import java.time.LocalDateTime;
 

@@ -10,6 +10,7 @@ import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
 
+import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.activities.BaseActivity;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
@@ -27,7 +28,7 @@ import io.vantezzen.adhocpay.network.NetworkCommunicator;
  */
 public class ManagerImpl implements Manager {
     // Aktuelle Instanzen
-    private final ASAPApplication application;
+    private final AdHocPayApplication application;
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
     private final ControllerManager controllerManager;
@@ -41,7 +42,7 @@ public class ManagerImpl implements Manager {
     // State
     private boolean isAsapSetup = false;
 
-    public ManagerImpl(ASAPApplication application) throws NullPointerException {
+    public ManagerImpl(AdHocPayApplication application) throws NullPointerException {
         Validation.notNull(application);
 
         // Setze benötigte Instanzen auf
@@ -57,7 +58,9 @@ public class ManagerImpl implements Manager {
     public void registerASAPListener(ASAPMessageReceivedListener listener) throws NullPointerException {
         Validation.notNull(listener);
 
-        application.addASAPMessageReceivedListener(ASAP_APPNAME, listener);
+        if (communicator instanceof ASAPCommunication) {
+            ((ASAPCommunication) communicator).getASAPApp().addASAPMessageReceivedListener(ASAP_APPNAME, listener);
+        }
     }
 
     @Override
@@ -85,17 +88,26 @@ public class ManagerImpl implements Manager {
 
     @Override
     public String getApplicationRootFolder(String app) {
-        return application.getApplicationRootFolder(app);
+        if (communicator instanceof ASAPCommunication) {
+            return ((ASAPCommunication) communicator).getASAPApp().getApplicationRootFolder(app);
+        }
+        return "";
     }
 
     @Override
     public String getOwnerId() {
-        return (String) application.getOwnerID();
+        if (communicator instanceof ASAPCommunication) {
+            return (String)((ASAPCommunication) communicator).getASAPApp().getOwnerID();
+        }
+        return "";
     }
 
     @Override
     public ASAPStorage getAsapStorage(String format) throws IOException, ASAPException {
-        return application.getASAPStorage(format);
+        if (communicator instanceof ASAPCommunication) {
+            return ((ASAPCommunication) communicator).getASAPApp().getASAPStorage(format);
+        }
+        return null;
     }
 
     @Override
@@ -153,6 +165,11 @@ public class ManagerImpl implements Manager {
     @Override
     public ControllerManager getControllerManager() {
         return controllerManager;
+    }
+
+    @Override
+    public NetworkCommunicator getNetworkCommunicator() {
+        return communicator;
     }
 
     @Override

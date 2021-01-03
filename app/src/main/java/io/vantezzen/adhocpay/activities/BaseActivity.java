@@ -6,13 +6,14 @@ import android.util.Log;
 import net.sharksystem.asap.android.apps.ASAPActivity;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
+import io.vantezzen.adhocpay.network.ASAPCommunication;
 
 public abstract class BaseActivity extends ASAPActivity {
     /**
      * Erzeuge eine neue BaseActivity Instanz.
      */
     public BaseActivity() {
-        super(AdHocPayApplication.getInstance());
+        super(((ASAPCommunication)(AdHocPayApplication.getManager().getNetworkCommunicator())).getASAPApp().getInstance());
 
         Log.d("BaseActivity", "Wurde erstellt");
     }
@@ -20,6 +21,7 @@ public abstract class BaseActivity extends ASAPActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("BaseActivity", "Starte ASAP");
+        AdHocPayApplication.setActivity(this);
         super.onCreate(savedInstanceState);
 
         // Stelle sicher, dass unsere Verbindung zum Netzwerk steht

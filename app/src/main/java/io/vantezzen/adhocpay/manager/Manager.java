@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import net.sharksystem.asap.ASAPException;
 import net.sharksystem.asap.ASAPStorage;
+import net.sharksystem.asap.android.apps.ASAPApplication;
 import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
@@ -148,6 +149,13 @@ public interface Manager {
      * @return Controller Manager
      */
     ControllerManager getControllerManager();
+
+    /**
+     * Liefert den aktuellen Network Communicator
+     *
+     * @return Network Communicator
+     */
+    NetworkCommunicator getNetworkCommunicator();
 
     // Logger
     /**

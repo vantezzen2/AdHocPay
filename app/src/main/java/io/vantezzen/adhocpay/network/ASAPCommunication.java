@@ -25,6 +25,7 @@ import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserDeserializer;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.manager.Manager;
+import io.vantezzen.adhocpay.network.asap.ASAPApp;
 import io.vantezzen.adhocpay.utils.LocalDateTimeSerializerDeserializer;
 
 /**
@@ -47,6 +48,9 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     public ASAPCommunication(Manager application, ControllerManager c) {
         this.application = application;
         this.controllerManager = c;
+
+        // Set up the ASAPApplication instance
+        ASAPApp.initializeApplication(application.getActivity());
 
         // We are the listener for all new ASAP messages
         application.registerASAPListener(this);
@@ -197,5 +201,9 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     public void setControllerManager(ControllerManager c) throws NullPointerException {
         Validation.notNull(c);
         this.controllerManager = c;
+    }
+
+    public ASAPApp getASAPApp() {
+        return ASAPApp.getInstance();
     }
 }

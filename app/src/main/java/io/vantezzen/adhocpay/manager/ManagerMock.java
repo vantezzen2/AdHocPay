@@ -124,6 +124,11 @@ public class ManagerMock implements Manager {
     }
 
     @Override
+    public NetworkCommunicator getNetworkCommunicator() {
+        return communicator;
+    }
+
+    @Override
     public void log(String start, String message) {
         System.out.println("Log: " + start + " - " + message);
     }

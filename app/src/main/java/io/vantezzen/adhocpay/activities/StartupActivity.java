@@ -19,13 +19,14 @@ public class StartupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AdHocPayApplication.setActivity(this);
         setContentView(R.layout.activity_startup);
 
         Log.d("SetupActivity", "Starte App");
         Log.d("SetupActivity", "Ist Testing: " + (AdHocPayApplication.isTesting() ? "y" : "n"));
 
         if (!AdHocPayApplication.isTesting()) {
-            AdHocPayApplication.initializeApplication(this);
+            AdHocPayApplication.initializeApplication();
         }
 
         // Starte die App
