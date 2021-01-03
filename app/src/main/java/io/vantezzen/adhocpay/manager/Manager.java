@@ -21,6 +21,7 @@ import io.vantezzen.adhocpay.network.NetworkCommunicator;
  */
 public interface Manager {
     // Weiterleitungen an die Application
+
     /**
      * Füge einen ASAP Message Listener zur aktuellen ASAPApplication hinzu
      *
@@ -31,7 +32,7 @@ public interface Manager {
     /**
      * Liefert die aktuelle Activity
      *
-     * @return Activity
+     * @return Activity activity
      */
     Activity getActivity();
 
@@ -43,6 +44,7 @@ public interface Manager {
     void refreshView();
 
     // ASAP Einstellungen
+
     /**
      * Liefert die App name, welche für ASAP benutzt werden sollte
      *
@@ -53,16 +55,17 @@ public interface Manager {
     /**
      * Liefert die Standart-URI, welche für ASAP genutzt wird
      *
-     * @return URI
+     * @return URI default uri
      */
     String getDefaultUri();
 
     // ASAP Komponenten
+
     /**
      * Liefert den Pfad zum root Verzeichnis der App durch ASAP
      *
      * @param app App Name
-     * @return Pfad
+     * @return Pfad application root folder
      */
     String getApplicationRootFolder(String app);
 
@@ -77,8 +80,8 @@ public interface Manager {
      * Liefert die ASAP Storage Instanz
      *
      * @param format Format des Storage
-     * @return Storage
-     * @throws IOException Falls nicht auf die IO zugegriffen werden kann
+     * @return Storage asap storage
+     * @throws IOException   Falls nicht auf die IO zugegriffen werden kann
      * @throws ASAPException Bei anderen Exceptions
      */
     ASAPStorage getAsapStorage(String format) throws IOException, ASAPException;
@@ -86,7 +89,7 @@ public interface Manager {
     /**
      * Liefert das Netzwerk
      *
-     * @return Netzwerkkommunikation
+     * @return Netzwerkkommunikation network
      */
     NetworkCommunicator getNetwork();
 
@@ -94,7 +97,7 @@ public interface Manager {
      * Setze das Netzwerk auf
      * Dies setzt bei ASAP vorraus, dass wir uns in einer ASAPActivity befinden, deswegen
      * muss dieser Schritt unabhängig vom Konstruktor geschehen
-     *
+     * <p>
      * Achtung: Diese Methode kann im Laufe des App Lifecycles mehrmals aufgerufen werden.
      * Sie sollte daher selbstständig in Erinnerung halten, ob das Netzwerk nicht bereits
      * aufgesetzt wurde.
@@ -102,10 +105,11 @@ public interface Manager {
     void setupNetwork();
 
     // Einstellungen
+
     /**
      * Speichere eine Einstellung
      *
-     * @param key Schlüssel
+     * @param key   Schlüssel
      * @param value Wert der Einstellung
      */
     void storeSetting(String key, String value);
@@ -119,6 +123,7 @@ public interface Manager {
     String getSetting(String key);
 
     // Models
+
     /**
      * Liefert die User Repository
      *
@@ -130,7 +135,7 @@ public interface Manager {
      * Liefert den aktuellen Nutzer
      * Diese Funktion sollte null liefern, falls der Nutzer noch nicht registriert ist
      *
-     * @return Nutzer
+     * @return Nutzer me
      */
     User getMe();
 
@@ -158,10 +163,11 @@ public interface Manager {
     NetworkCommunicator getNetworkCommunicator();
 
     // Logger
+
     /**
      * Logge eine Nachricht
      *
-     * @param start Start der Nachricht. Dies sollte i.d.R. der aktuelle Klassenname sein
+     * @param start   Start der Nachricht. Dies sollte i.d.R. der aktuelle Klassenname sein
      * @param message Nachricht
      */
     void log(String start, String message);

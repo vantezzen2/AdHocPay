@@ -18,6 +18,9 @@ import io.vantezzen.adhocpay.R;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 import io.vantezzen.adhocpay.utils.TransactionListRecyclerViewAdapter;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private TransactionListRecyclerViewAdapter recyclerViewAdapter;

@@ -3,9 +3,18 @@ package io.vantezzen.adhocpay.network;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 
+/**
+ * The type Mock communicator.
+ */
 public class MockCommunicator implements NetworkCommunicator {
+    /**
+     * The Last sent transaction.
+     */
     Transaction lastSentTransaction = null;
 
+    /**
+     * The Response.
+     */
     boolean response = true;
 
     @Override
@@ -27,7 +36,7 @@ public class MockCommunicator implements NetworkCommunicator {
     /**
      * Liefert die letzte Transaktion, welche gesendet wurde
      *
-     * @return Transaktion
+     * @return Transaktion last sent transaction
      */
     public Transaction getLastSentTransaction() {
         return lastSentTransaction;

@@ -29,6 +29,11 @@ public class ManagerMock implements Manager {
     private final NetworkCommunicator communicator;
     private Map<String, String> settings = new HashMap<>();
 
+    /**
+     * Instantiates a new Manager mock.
+     *
+     * @param addTestData the add test data
+     */
     public ManagerMock(boolean addTestData) {
         // Setze benötigte Instanzen auf
         // Wir können die echten Repositories nutzen, da diese abgekapselt sind
@@ -136,7 +141,7 @@ public class ManagerMock implements Manager {
     /**
      * Liefert den aktuellen MockCommunicator
      *
-     * @return Communicator
+     * @return Communicator communicator
      */
     public NetworkCommunicator getCommunicator() {
         return communicator;

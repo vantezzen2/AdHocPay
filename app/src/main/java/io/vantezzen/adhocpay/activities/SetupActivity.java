@@ -10,6 +10,9 @@ import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.R;
 import io.vantezzen.adhocpay.manager.Manager;
 
+/**
+ * The type Setup activity.
+ */
 public class SetupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

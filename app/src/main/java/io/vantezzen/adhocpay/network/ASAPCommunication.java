@@ -18,6 +18,8 @@ import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
@@ -43,7 +45,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
      * Setze eine neue ASAPCommunication Klasse auf
      *
      * @param application Application Manager
-     * @param c Controller Manager
+     * @param c           Controller Manager
      */
     public ASAPCommunication(Manager application, ControllerManager c) {
         this.application = application;
@@ -144,6 +146,22 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         return true;
     }
 
+    /**
+     * Importiere die Transaktion aus einer String-Nachricht
+     *
+     * @param msg Nachricht
+     */
+    private void addTransaction(String msg) {
+        // Füge die Transaktion hinzu
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializerDeserializer());
+        gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer(application.getUserRepository()));
+
+        Gson gson = gsonBuilder.create();
+        Transaction transaction = gson.fromJson(msg, Transaction.class);
+        application.getTransactionRepository().receiveTransaction(transaction);
+    }
+
     @Override
     public void asapMessagesReceived(ASAPMessages asapMessages) {
         Iterator<byte[]> msgInter;
@@ -157,25 +175,31 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             this.application.log(LOG_START, "Error while receiving message: " + e);
             return;
         }
+
+        // Wir müssen geteilte Nachrichten wieder zusammensetzen
+        String message = "";
         while(msgInter.hasNext()) {
             byte[] msgBytes = msgInter.next();
             String msg = new String(msgBytes);
             this.application.log("ASAPCommunication", "message received: " + msg);
 
-            // Teste, dass die Nachricht ein JSON String ist
-            if(msg.charAt(0) != '{') {
-                Log.d("ASAPCommunication", "Got unknown msg: " + msg);
-                continue;
+            if (msg.equals("__START__")) {
+                // Fange eine neue Nachricht an und beende die vorherige Nachricht
+                if (message.length() > 0) {
+                    this.application.log("ASAPCommunication", "Komplette Transaktions-Nachricht: " + message);
+                    addTransaction(message);
+                }
+
+                this.application.log("ASAPCommunication", "Fange das Empfangen einer neue Transaktion an");
+
+                message = "";
+            } else {
+                message += msg;
             }
+        }
 
-            // Füge die Transaktion hinzu
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializerDeserializer());
-            gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer(application.getUserRepository()));
-
-            Gson gson = gsonBuilder.create();
-            Transaction transaction = gson.fromJson(msg, Transaction.class);
-            application.getTransactionRepository().receiveTransaction(transaction);
+        if (message.length() > 0) {
+            addTransaction(message);
         }
 
         this.application.log(LOG_START, "Messages received");
@@ -192,9 +216,22 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         String message = t.toJson();
 
-        this.application.log(LOG_START, "Sending transaction: " + message);
+        // Wir müssen die message in Teile von höchstens 127 byte teilen, siehe https://github.com/SharedKnowledge/ASAPAndroid/issues/6
 
-        return transmit(message, application.getDefaultUri());
+        transmit("__START__", application.getDefaultUri());
+        int stringPos = 0;
+        int partLength = 120;
+        while(stringPos < message.length()) {
+            transmit(
+                    message.substring(stringPos, stringPos + partLength),
+                    application.getDefaultUri()
+            );
+            stringPos += partLength;
+        }
+
+        this.application.log(LOG_START, "Transaktion gesendet: " + message);
+
+        return true;
     }
 
     @Override
@@ -203,6 +240,11 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         this.controllerManager = c;
     }
 
+    /**
+     * Gets asap app.
+     *
+     * @return the asap app
+     */
     public ASAPApp getASAPApp() {
         return ASAPApp.getInstance();
     }

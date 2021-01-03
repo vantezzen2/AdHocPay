@@ -35,13 +35,25 @@ public class ManagerImpl implements Manager {
     private final Logger logger;
     private final NetworkCommunicator communicator;
 
-    // Statische Daten für ASAP
+    /**
+     * The constant ASAP_APPNAME.
+     */
+// Statische Daten für ASAP
     public static final String ASAP_APPNAME = "application/x-AdHocPay";
+    /**
+     * The constant DEFAULT_URI.
+     */
     public static final String DEFAULT_URI = "adhocpay://data";
 
     // State
     private boolean isAsapSetup = false;
 
+    /**
+     * Instantiates a new Manager.
+     *
+     * @param application the application
+     * @throws NullPointerException the null pointer exception
+     */
     public ManagerImpl(AdHocPayApplication application) throws NullPointerException {
         Validation.notNull(application);
 

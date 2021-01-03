@@ -17,6 +17,9 @@ import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.manager.ManagerImpl;
 import io.vantezzen.adhocpay.manager.ManagerMock;
 
+/**
+ * The type Asap app.
+ */
 public class ASAPApp extends ASAPApplication {
     private static ASAPApp instance;
 
@@ -27,8 +30,9 @@ public class ASAPApp extends ASAPApplication {
     /**
      * Initialize the ASAP Application
      *
-     * @param initialActivity
+     * @param initialActivity the initial activity
      * @return Current Application instance
+     * @throws NullPointerException the null pointer exception
      */
     public static ASAPApp initializeApplication(Activity initialActivity) throws NullPointerException {
         Log.d("ASAPApp", "Erstelle App");
@@ -54,7 +58,7 @@ public class ASAPApp extends ASAPApplication {
     /**
      * Get the current App instance
      *
-     * @return Instance
+     * @return Instance instance
      */
     public static ASAPApp getInstance() {
         return instance;

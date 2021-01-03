@@ -8,6 +8,9 @@ import io.vantezzen.adhocpay.models.Model;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 
+/**
+ * The type User.
+ */
 public class User implements Model {
     // Daten des Models
     private String username;
@@ -15,7 +18,7 @@ public class User implements Model {
     /**
      * Erstelle einen neuen Nutzer
      *
-     * @param username Nutzername
+     * @param username   Nutzername
      * @param repository Nutzerrepository
      * @throws NullPointerException Wenn repository = null
      */
@@ -30,7 +33,9 @@ public class User implements Model {
     /**
      * Liefert alle Transaktionen dieses Nutzers
      *
+     * @param repository the repository
      * @return List of transactions
+     * @throws NullPointerException the null pointer exception
      */
     public List<Transaction> transactions(TransactionRepository repository) throws NullPointerException {
         Validation.notNull(repository);
@@ -49,7 +54,9 @@ public class User implements Model {
     /**
      * Get the amount of credits this user has available
      *
-     * @return Credits
+     * @param repository the repository
+     * @return Credits credit
+     * @throws NullPointerException the null pointer exception
      */
     public float getCredit(TransactionRepository repository) throws NullPointerException {
         Validation.notNull(repository);
@@ -71,7 +78,7 @@ public class User implements Model {
     /**
      * Liefert den Nutzernamen dieses Nutzers
      *
-     * @return Nutzername
+     * @return Nutzername username
      */
     public String getUsername() {
         return username;

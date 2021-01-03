@@ -13,6 +13,9 @@ import io.vantezzen.adhocpay.R;
 import io.vantezzen.adhocpay.controllers.TransactionController;
 import io.vantezzen.adhocpay.exceptions.InvalidTransactionException;
 
+/**
+ * The type Send transaction activity.
+ */
 public class SendTransactionActivity extends AppCompatActivity {
 
     @Override

@@ -18,6 +18,7 @@ public abstract class BaseController implements Controller {
      * Manager, damit er mit anderen Teilen der App kommunizieren kann
      *
      * @param manager Manager Instanz
+     * @throws NullPointerException the null pointer exception
      */
     public BaseController(Manager manager) throws NullPointerException {
         Validation.notNull(manager);

@@ -7,14 +7,14 @@ public interface ControllerManager {
     /**
      * Liefert den aktuellen UserController
      *
-     * @return UserController
+     * @return UserController user controller
      */
     UserController getUserController();
 
     /**
      * Liefert den aktuellen TransactionController
      *
-     * @return TransactionController
+     * @return TransactionController transaction controller
      */
     TransactionController getTransactionController();
 

@@ -20,6 +20,7 @@ public class Validation {
      * Prüfe, dass der Float Wert größer als 0 ist (0 NICHT eingeschlossen)
      *
      * @param a Zahl
+     * @throws IllegalArgumentException the illegal argument exception
      */
     public static void greaterThanZero(float a) throws IllegalArgumentException {
         if (a <= 0) {

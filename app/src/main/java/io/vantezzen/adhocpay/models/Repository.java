@@ -11,6 +11,9 @@ import io.vantezzen.adhocpay.Validation;
  * @param <Model> Model, welches gespeichert wird
  */
 public abstract class Repository<Model> {
+    /**
+     * The Models.
+     */
     protected List<Model> models;
 
     /**
@@ -23,7 +26,7 @@ public abstract class Repository<Model> {
     /**
      * Liefert alle Models aus der Repository
      *
-     * @return Models
+     * @return Models all
      */
     public List<Model> getAll() {
         return models;
@@ -33,6 +36,7 @@ public abstract class Repository<Model> {
      * Füge dem Repository ein Model hinzu
      *
      * @param model Model
+     * @throws NullPointerException the null pointer exception
      */
     public void add(Model model) throws NullPointerException {
         Validation.notNull(model);

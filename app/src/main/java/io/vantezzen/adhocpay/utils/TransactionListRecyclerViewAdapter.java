@@ -32,6 +32,11 @@ public class TransactionListRecyclerViewAdapter extends RecyclerView.Adapter<Tra
         private final TextView amountTextView;
         private final TextView timeAgoTextView;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param view the view
+         */
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
@@ -41,13 +46,29 @@ public class TransactionListRecyclerViewAdapter extends RecyclerView.Adapter<Tra
             timeAgoTextView = (TextView) view.findViewById(R.id.time_ago);
         }
 
+        /**
+         * Gets sender receiver text view.
+         *
+         * @return the sender receiver text view
+         */
         public TextView getSenderReceiverTextView() {
             return senderReceiverTextView;
         }
 
+        /**
+         * Gets amount text view.
+         *
+         * @return the amount text view
+         */
         public TextView getAmountTextView() {
             return amountTextView;
         }
+
+        /**
+         * Gets time ago text view.
+         *
+         * @return the time ago text view
+         */
         public TextView getTimeAgoTextView() {
             return timeAgoTextView;
         }
@@ -56,8 +77,7 @@ public class TransactionListRecyclerViewAdapter extends RecyclerView.Adapter<Tra
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param repository TransactionRepository containing the data to populate views to be used
-     * by RecyclerView.
+     * @param repository TransactionRepository containing the data to populate views to be used by RecyclerView.
      */
     public TransactionListRecyclerViewAdapter(TransactionRepository repository) {
         this.respository = repository;

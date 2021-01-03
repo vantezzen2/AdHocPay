@@ -1,10 +1,13 @@
 package io.vantezzen.adhocpay.storage;
 
+/**
+ * The interface Storage provider.
+ */
 public interface StorageProvider {
     /**
      * Setzt einen Wert in den Einstellungen
      *
-     * @param key Schlüssel, für die Daten
+     * @param key   Schlüssel, für die Daten
      * @param value Daten
      */
     void set(String key, String value);
@@ -13,7 +16,7 @@ public interface StorageProvider {
      * Liefert den Wert eines Schlüssels in den Einstellungen
      *
      * @param key Schlüssel
-     * @return Wert
+     * @return Wert string
      */
     String get(String key);
 }

@@ -15,7 +15,7 @@ import java.util.Locale;
 
 /**
  * Custom GSON Serializer for LocalDateTime Objects
- *
+ * <p>
  * Source: https://www.javaguides.net/2019/11/gson-localdatetime-localdate.html
  */
 public class LocalDateTimeSerializerDeserializer implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {

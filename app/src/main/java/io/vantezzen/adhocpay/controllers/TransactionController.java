@@ -12,6 +12,11 @@ import io.vantezzen.adhocpay.models.user.UserRepository;
  * TransactionController: Kontrolliert den Umgang mit Transaktionen
  */
 public class TransactionController extends BaseController {
+    /**
+     * Instantiates a new Transaction controller.
+     *
+     * @param manager the manager
+     */
     public TransactionController(Manager manager) {
         super(manager);
     }
@@ -19,9 +24,10 @@ public class TransactionController extends BaseController {
     /**
      * Sende eine Transaktion an einen anderen Nutzer
      *
-     * @param wert Wert der Transaktion
+     * @param wert         Wert der Transaktion
      * @param receiverName Empfänger
      * @return Neue Transaktion
+     * @throws InvalidTransactionException the invalid transaction exception
      */
     public Transaction sendTransaction(float wert, String receiverName) throws InvalidTransactionException {
         UserRepository userRepository = manager.getUserRepository();

@@ -16,6 +16,8 @@ public class TransactionRepository extends Repository<Transaction> {
     /**
      * Erstelle Testdaten.
      * Dies wird nur zum aktuellen Testen der App benötigt und wird später entfernt
+     *
+     * @param u the u
      */
     public void createSomeTestData(UserRepository u) {
         new Transaction(
@@ -51,6 +53,13 @@ public class TransactionRepository extends Repository<Transaction> {
                 this
         );
     }
+
+    /**
+     * Instantiates a new Transaction repository.
+     *
+     * @param u           the u
+     * @param addTestData the add test data
+     */
     public TransactionRepository(UserRepository u, boolean addTestData) {
         super();
         if (addTestData) {
@@ -61,11 +70,14 @@ public class TransactionRepository extends Repository<Transaction> {
     /**
      * Sende eine Transaktion an das Netzwerk
      *
-     * @param sender Sender Nutzer
-     * @param receiver Empfänger Nutzer
-     * @param amount Betrag
+     * @param sender       Sender Nutzer
+     * @param receiver     Empfänger Nutzer
+     * @param amount       Betrag
      * @param communicator Netzwerkkommunikation
      * @return Transaktion falls erfolgreich, sonst null
+     * @throws NullPointerException        the null pointer exception
+     * @throws IllegalArgumentException    the illegal argument exception
+     * @throws InvalidTransactionException the invalid transaction exception
      */
     public Transaction sendTransaction(User sender, User receiver, float amount, NetworkCommunicator communicator) throws NullPointerException, IllegalArgumentException, InvalidTransactionException {
         Validation.notNull(sender);

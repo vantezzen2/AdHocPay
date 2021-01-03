@@ -8,6 +8,11 @@ import io.vantezzen.adhocpay.models.user.User;
  * UserController: Managed mit den Umgang mit Nutzern
  */
 public class UserController extends BaseController {
+    /**
+     * Instantiates a new User controller.
+     *
+     * @param manager the manager
+     */
     public UserController(Manager manager) {
         super(manager);
     }
@@ -34,7 +39,7 @@ public class UserController extends BaseController {
      * Liefert einen Nutzer für seine Nutzerinformationen
      *
      * @param username Nutzername des Nutzers
-     * @return Nutzer
+     * @return Nutzer user
      */
     public User getUser(String username) {
         return null;
