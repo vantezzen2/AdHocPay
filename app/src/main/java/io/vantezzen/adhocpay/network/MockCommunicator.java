@@ -1,7 +1,10 @@
 package io.vantezzen.adhocpay.network;
 
+import org.mockito.Mockito;
+
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
+import io.vantezzen.adhocpay.network.asap.ASAPApp;
 
 /**
  * The type Mock communicator.
@@ -20,6 +23,13 @@ public class MockCommunicator implements NetworkCommunicator {
     @Override
     public void setup() {
         // Tue nichts
+    }
+
+    @Override
+    public ASAPApp getASAPApp() {
+        ASAPApp mock = Mockito.mock(ASAPApp.class);
+
+        return mock;
     }
 
     @Override

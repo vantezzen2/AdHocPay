@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "org.mockito:mockito-core:2.7.22";
-    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    //androidTestImplementation 'org.mockito:mockito-android:2.7.22'
     implementation fileTree(dir: 'aars', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

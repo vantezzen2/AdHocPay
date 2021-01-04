@@ -16,7 +16,10 @@ public abstract class BaseActivity extends ASAPActivity {
      * Erzeuge eine neue BaseActivity Instanz.
      */
     public BaseActivity() {
-        super(((ASAPCommunication)(AdHocPayApplication.getManager().getNetworkCommunicator())).getASAPApp().getInstance());
+        super(
+                (
+                        (AdHocPayApplication.getManager().getNetworkCommunicator())
+                ).getASAPApp());
 
         Log.d("BaseActivity", "Wurde erstellt");
     }

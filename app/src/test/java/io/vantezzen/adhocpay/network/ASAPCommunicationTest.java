@@ -13,6 +13,7 @@ import net.sharksystem.asap.android.apps.ASAPActivity;
 
 import java.time.LocalDateTime;
 
+import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.controllers.ControllerManagerImpl;
 import io.vantezzen.adhocpay.manager.Manager;
@@ -28,6 +29,7 @@ public class ASAPCommunicationTest {
         Manager manager = Mockito.mock(Manager.class);
         ControllerManager controllerManager = new ControllerManagerImpl(manager);
 
+        AdHocPayApplication.useTestApplication();
         ASAPCommunication communication = new ASAPCommunication(manager, controllerManager);
 
         // Communication sollte sich als ASAP Listener registriert haben
@@ -37,6 +39,7 @@ public class ASAPCommunicationTest {
     @Test
     public void testCanSendMessage() throws ASAPException {
         // Setze benötigte Klassen auf
+        AdHocPayApplication.useTestApplication();
         Manager manager = Mockito.mock(Manager.class);
         ControllerManager controllerManager = new ControllerManagerImpl(manager);
         ASAPActivity activityMock = Mockito.mock(ASAPActivity.class);
