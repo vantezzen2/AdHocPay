@@ -3,4 +3,4 @@ package io.vantezzen.adhocpay.activities;
 /**
  * The type Base activity.
  */
-public abstract class BaseActivity extends BaseActivityWithoutASAP {}
+public abstract class BaseActivity extends BaseActivityWithASAP {}

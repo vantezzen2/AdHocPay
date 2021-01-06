@@ -11,6 +11,7 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 /**
@@ -30,7 +31,13 @@ public class LocalDateTimeSerializerDeserializer implements JsonSerializer<Local
     @Override
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
-        return LocalDateTime.parse(json.getAsString(),
-                DateTimeFormatter.ofPattern(FORMAT).withLocale(Locale.ENGLISH));
+
+        try {
+            return LocalDateTime.parse(json.getAsString(),
+                    DateTimeFormatter.ofPattern(FORMAT).withLocale(Locale.ENGLISH));
+        } catch(DateTimeParseException e) {
+            return LocalDateTime.now();
+        }
+
     }
 }

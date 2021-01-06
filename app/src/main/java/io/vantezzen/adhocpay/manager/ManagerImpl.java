@@ -64,8 +64,8 @@ public class ManagerImpl implements Manager {
         this.transactionRepository = new TransactionRepository(this.userRepository, false);
         this.controllerManager = new ControllerManagerImpl(this);
         this.logger = new AndroidLogger();
-        //this.communicator = new ASAPCommunication(this, controllerManager);
-        this.communicator = new HttpCommunication(this);
+        this.communicator = new ASAPCommunication(this, controllerManager);
+        //this.communicator = new HttpCommunication(this);
     }
 
     @Override

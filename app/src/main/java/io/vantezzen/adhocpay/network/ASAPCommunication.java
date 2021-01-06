@@ -17,9 +17,12 @@ import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
@@ -38,6 +41,8 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     private boolean started = false;
     private ControllerManager controllerManager = null;
     private ASAPStorage asapStorage = null;
+    private String message = ""; // Aktueller Bruchteil der Transaktion
+    private Set<Integer> fetchedIds;
 
     private String LOG_START = "ASAPCommunication";
 
@@ -50,12 +55,13 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     public ASAPCommunication(Manager application, ControllerManager c) {
         this.application = application;
         this.controllerManager = c;
+        fetchedIds = new HashSet();
 
         // Set up the ASAPApplication instance
         ASAPApp.initializeApplication(application.getActivity());
 
         // We are the listener for all new ASAP messages
-        application.registerASAPListener(this);
+        ASAPApp.getInstance().addASAPMessageReceivedListener(application.getAppName(), this);
     }
 
     @Override
@@ -159,7 +165,16 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         Gson gson = gsonBuilder.create();
         Transaction transaction = gson.fromJson(msg, Transaction.class);
-        application.getTransactionRepository().receiveTransaction(transaction);
+
+        // Stelle sicher, dass die Transaktion nicht schon empfangen wurde
+        if (!fetchedIds.contains(transaction.id)) {
+            application.getTransactionRepository().receiveTransaction(transaction);
+            fetchedIds.add(transaction.id);
+
+            application.log("ASAPComm", "Neue Transaktion empfangen");
+        } else {
+            application.log("ASAPComm", "Duplikat einer Transaktion erhalten - ignoriere");
+        }
     }
 
     @Override
@@ -177,30 +192,32 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         }
 
         // Wir müssen geteilte Nachrichten wieder zusammensetzen
-        String message = "";
         while(msgInter.hasNext()) {
             byte[] msgBytes = msgInter.next();
             String msg = new String(msgBytes);
             this.application.log("ASAPCommunication", "message received: " + msg);
 
-            if (msg.equals("__START__")) {
-                // Fange eine neue Nachricht an und beende die vorherige Nachricht
+            if (msg.contains("__START__")) {
+                // Fange eine neue Nachricht an
+                this.application.log("ASAPCommunication", "Fange das Empfangen einer neue Transaktion an");
+
+                // ASAP sendet teilweise die beiden Nachrichten zusammen, deshalb müssen wir
+                // hier evtl. angeschlossene Nachrichtenteile hinzufügen
+                String currentMessageContent = msg.replace("__START__", "");
+                message = currentMessageContent;
+            } else if (msg.equals("__END__")){
+                // Beende die aktuelle Nachricht
                 if (message.length() > 0) {
                     this.application.log("ASAPCommunication", "Komplette Transaktions-Nachricht: " + message);
                     addTransaction(message);
+                } else {
+                    this.application.log("ASAPCommunication", "Transaktionsende erhalten, aber keine Transaktion - ignoriere");
                 }
-
-                this.application.log("ASAPCommunication", "Fange das Empfangen einer neue Transaktion an");
 
                 message = "";
             } else {
                 message += msg;
             }
-        }
-
-        if (message.length() > 0) {
-            this.application.log("ASAPCommunication", "Füge letzte Nachricht hinzu: " + message);
-            addTransaction(message);
         }
 
         this.application.log(LOG_START, "Messages received");
@@ -214,6 +231,16 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     @Override
     public boolean sendTransaction(Transaction t) throws NullPointerException {
         Validation.notNull(t);
+
+        if (t.id == 0) {
+            // Erstelle eine zufällige ID für die Transaktion
+            int id;
+            Random random = new Random();
+            do {
+                id = random.nextInt();
+            } while(fetchedIds.contains(id));
+            t.id = id;
+        }
 
         String message = t.toJson();
 
@@ -232,6 +259,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             );
             stringPos += partLength;
         }
+        transmit("__END__", application.getDefaultUri());
 
         this.application.log(LOG_START, "Transaktion gesendet: " + message);
 
