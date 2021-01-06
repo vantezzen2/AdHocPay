@@ -22,6 +22,7 @@ import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
+import io.vantezzen.adhocpay.network.asap.ASAPApp;
 
 public class ASAPCommunicationTest {
     @Test
@@ -33,7 +34,7 @@ public class ASAPCommunicationTest {
         ASAPCommunication communication = new ASAPCommunication(manager, controllerManager);
 
         // Communication sollte sich als ASAP Listener registriert haben
-        Mockito.verify(manager).registerASAPListener(communication);
+        Mockito.verify(ASAPApp.getInstance()).addASAPMessageReceivedListener(manager.getAppName(), communication);
     }
 
     @Test
@@ -56,7 +57,7 @@ public class ASAPCommunicationTest {
 
         // Sende eine Transaktion über den ASAPCommunicator
         ASAPCommunication communication = new ASAPCommunication(manager, controllerManager);
-        Transaction testTransaction = new Transaction("karlos", "peteros", 15.99f, LocalDateTime.of(2020, 12,01,00, 15), ur, tr);
+        Transaction testTransaction = new Transaction("karlos", "peteros", 15.99f, LocalDateTime.of(2020, 12,1,0, 15), ur, tr);
         communication.sendTransaction(testTransaction);
 
         // Communication sollte eine Nachricht über die Activity gesendet haben

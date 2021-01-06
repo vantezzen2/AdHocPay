@@ -3,13 +3,6 @@ package io.vantezzen.adhocpay.manager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import net.sharksystem.asap.ASAPException;
-import net.sharksystem.asap.ASAPStorage;
-import net.sharksystem.asap.android.apps.ASAPApplication;
-import net.sharksystem.asap.apps.ASAPMessageReceivedListener;
-
-import java.io.IOException;
-
 import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.activities.BaseActivity;
@@ -29,7 +22,6 @@ import io.vantezzen.adhocpay.network.NetworkCommunicator;
  */
 public class ManagerImpl implements Manager {
     // Aktuelle Instanzen
-    private final AdHocPayApplication application;
     private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
     private final ControllerManager controllerManager;
@@ -52,14 +44,10 @@ public class ManagerImpl implements Manager {
     /**
      * Instantiates a new Manager.
      *
-     * @param application the application
      * @throws NullPointerException the null pointer exception
      */
-    public ManagerImpl(AdHocPayApplication application) throws NullPointerException {
-        Validation.notNull(application);
-
+    public ManagerImpl() throws NullPointerException {
         // Setze benötigte Instanzen auf
-        this.application = application;
         this.userRepository = new UserRepository();
         this.transactionRepository = new TransactionRepository(this.userRepository, false);
         this.controllerManager = new ControllerManagerImpl(this);
@@ -69,22 +57,13 @@ public class ManagerImpl implements Manager {
     }
 
     @Override
-    public void registerASAPListener(ASAPMessageReceivedListener listener) throws NullPointerException {
-        Validation.notNull(listener);
-
-        if (communicator instanceof ASAPCommunication) {
-            ((ASAPCommunication) communicator).getASAPApp().addASAPMessageReceivedListener(ASAP_APPNAME, listener);
-        }
-    }
-
-    @Override
     public Activity getActivity() {
-        return application.getActivity();
+        return AdHocPayApplication.getActivity();
     }
 
     @Override
     public void refreshView() {
-        Activity activity = application.getActivity();
+        Activity activity = AdHocPayApplication.getActivity();
         if (activity instanceof BaseActivity) {
             ((BaseActivity) activity).onDataChange();
         }
@@ -98,30 +77,6 @@ public class ManagerImpl implements Manager {
     @Override
     public String getDefaultUri() {
         return DEFAULT_URI;
-    }
-
-    @Override
-    public String getApplicationRootFolder(String app) {
-        if (communicator instanceof ASAPCommunication) {
-            return ((ASAPCommunication) communicator).getASAPApp().getApplicationRootFolder(app);
-        }
-        return "";
-    }
-
-    @Override
-    public String getOwnerId() {
-        if (communicator instanceof ASAPCommunication) {
-            return (String)((ASAPCommunication) communicator).getASAPApp().getOwnerID();
-        }
-        return "";
-    }
-
-    @Override
-    public ASAPStorage getAsapStorage(String format) throws IOException, ASAPException {
-        if (communicator instanceof ASAPCommunication) {
-            return ((ASAPCommunication) communicator).getASAPApp().getASAPStorage(format);
-        }
-        return null;
     }
 
     @Override
@@ -142,19 +97,17 @@ public class ManagerImpl implements Manager {
         Validation.notNull(key);
         Validation.notNull(value);
 
-        SharedPreferences.Editor editor = application.getActivity().getSharedPreferences("ADHOCPAY", 0).edit();
+        SharedPreferences.Editor editor = AdHocPayApplication.getActivity().getSharedPreferences("ADHOCPAY", 0).edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     @Override
     public String getSetting(String key) throws NullPointerException {
         Validation.notNull(key);
 
-        SharedPreferences settings = application.getActivity().getSharedPreferences("ADHOCPAY", 0);
-        String data = settings.getString(key, null);
-
-        return data;
+        SharedPreferences settings = AdHocPayApplication.getActivity().getSharedPreferences("ADHOCPAY", 0);
+        return settings.getString(key, null);
     }
 
     @Override

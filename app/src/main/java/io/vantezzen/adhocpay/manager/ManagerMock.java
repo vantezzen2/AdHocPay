@@ -48,11 +48,6 @@ public class ManagerMock implements Manager {
     }
 
     @Override
-    public void registerASAPListener(ASAPMessageReceivedListener listener) {
-        // Tue nichts
-    }
-
-    @Override
     public Activity getActivity() {
         // Wir haben keine Activity
         return null;
@@ -71,21 +66,6 @@ public class ManagerMock implements Manager {
     @Override
     public String getDefaultUri() {
         return "adhocpay://mock";
-    }
-
-    @Override
-    public String getApplicationRootFolder(String app) {
-        return app;
-    }
-
-    @Override
-    public String getOwnerId() {
-        return "1";
-    }
-
-    @Override
-    public ASAPStorage getAsapStorage(String format) throws IOException, ASAPException {
-        return null;
     }
 
     @Override

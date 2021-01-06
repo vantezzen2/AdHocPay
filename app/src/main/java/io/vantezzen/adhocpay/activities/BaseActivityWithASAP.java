@@ -7,6 +7,9 @@ import net.sharksystem.asap.android.apps.ASAPActivity;
 
 import io.vantezzen.adhocpay.AdHocPayApplication;
 
+/**
+ * BaseActivity mit ASAP Unterstützung
+ */
 public abstract class BaseActivityWithASAP extends ASAPActivity {
     /**
      * Erzeuge eine neue BaseActivity Instanz.

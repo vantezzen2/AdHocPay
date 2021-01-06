@@ -1,7 +1,9 @@
 package io.vantezzen.adhocpay.network;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.Validation;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.models.user.User;
@@ -37,9 +40,9 @@ import io.vantezzen.adhocpay.utils.LocalDateTimeSerializerDeserializer;
  * ASAPCommunication: Handle communicating with the ASAP framework
  */
 public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCommunicator {
-    private Manager application = null;
+    private Manager application;
     private boolean started = false;
-    private ControllerManager controllerManager = null;
+    private ControllerManager controllerManager;
     private ASAPStorage asapStorage = null;
     private String message = ""; // Aktueller Bruchteil der Transaktion
     private Set<Integer> fetchedIds;
@@ -55,7 +58,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     public ASAPCommunication(Manager application, ControllerManager c) {
         this.application = application;
         this.controllerManager = c;
-        fetchedIds = new HashSet();
+        fetchedIds = new HashSet<>();
 
         // Set up the ASAPApplication instance
         ASAPApp.initializeApplication(application.getActivity());
@@ -73,9 +76,9 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         // Setze ASAPStorage auf
         try {
-            asapStorage = application.getAsapStorage(application.getAppName());
+            asapStorage = ASAPApp.getInstance().getASAPStorage(application.getAppName());
         } catch (IOException e) {
-            // TODO: Handle these
+            Toast.makeText(AdHocPayApplication.getActivity(), "Kann keine Daten speichern", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         } catch (ASAPException e) {
             e.printStackTrace();
@@ -84,7 +87,6 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         Activity activity = application.getActivity();
         if (!(activity instanceof ASAPActivity)) {
             this.application.log(LOG_START, "Not currently in a ASAP Activity");
-            // TODO: Handle this?
         } else {
             ASAPActivity act = (ASAPActivity) application.getActivity();
             act.startBluetooth();
@@ -109,15 +111,20 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             channel = asapStorage.getChannel(application.getDefaultUri());
             messages = channel.getMessages();
         } catch (IOException | ASAPException e) {
-            // TODO: Handle these
-            Log.d(LOG_START, e.getMessage());
+            Toast.makeText(AdHocPayApplication.getActivity(), "Konnte Transaktions-Daten nicht wiederherstellen", Toast.LENGTH_LONG).show();
+
+            if (e.getMessage() != null) {
+                Log.d(LOG_START, e.getMessage());
+            }
             e.printStackTrace();
             return;
         }
 
         try {
             this.application.log("AdHocPayApplication", "Restoring " + messages.size() + " messages");
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            // Tue nichts...
+        }
         asapMessagesReceived(messages);
     }
 
@@ -203,8 +210,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
                 // ASAP sendet teilweise die beiden Nachrichten zusammen, deshalb müssen wir
                 // hier evtl. angeschlossene Nachrichtenteile hinzufügen
-                String currentMessageContent = msg.replace("__START__", "");
-                message = currentMessageContent;
+                message = msg.replace("__START__", "");
             } else if (msg.equals("__END__")){
                 // Beende die aktuelle Nachricht
                 if (message.length() > 0) {

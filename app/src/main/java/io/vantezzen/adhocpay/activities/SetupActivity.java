@@ -22,7 +22,7 @@ public class SetupActivity extends BaseActivity {
 
     @Override
     public void onDataChange() {
-
+        // Tue nichts...
     }
 
     /**

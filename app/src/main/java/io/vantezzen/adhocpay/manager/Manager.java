@@ -21,14 +21,6 @@ import io.vantezzen.adhocpay.network.NetworkCommunicator;
  */
 public interface Manager {
     // Weiterleitungen an die Application
-
-    /**
-     * Füge einen ASAP Message Listener zur aktuellen ASAPApplication hinzu
-     *
-     * @param listener ASAP Listener Klassen-Instanz
-     */
-    void registerASAPListener(ASAPMessageReceivedListener listener);
-
     /**
      * Liefert die aktuelle Activity
      *
@@ -59,33 +51,7 @@ public interface Manager {
      */
     String getDefaultUri();
 
-    // ASAP Komponenten
-
-    /**
-     * Liefert den Pfad zum root Verzeichnis der App durch ASAP
-     *
-     * @param app App Name
-     * @return Pfad application root folder
-     */
-    String getApplicationRootFolder(String app);
-
-    /**
-     * Liefert die ASAP Owner ID
-     *
-     * @return Owner ID
-     */
-    String getOwnerId();
-
-    /**
-     * Liefert die ASAP Storage Instanz
-     *
-     * @param format Format des Storage
-     * @return Storage asap storage
-     * @throws IOException   Falls nicht auf die IO zugegriffen werden kann
-     * @throws ASAPException Bei anderen Exceptions
-     */
-    ASAPStorage getAsapStorage(String format) throws IOException, ASAPException;
-
+    // Netzwerk
     /**
      * Liefert das Netzwerk
      *
