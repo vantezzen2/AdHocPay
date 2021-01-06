@@ -21,6 +21,7 @@ import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
 import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
 import io.vantezzen.adhocpay.network.ASAPCommunication;
+import io.vantezzen.adhocpay.network.HttpCommunication;
 import io.vantezzen.adhocpay.network.NetworkCommunicator;
 
 /**
@@ -63,7 +64,8 @@ public class ManagerImpl implements Manager {
         this.transactionRepository = new TransactionRepository(this.userRepository, false);
         this.controllerManager = new ControllerManagerImpl(this);
         this.logger = new AndroidLogger();
-        this.communicator = new ASAPCommunication(this, controllerManager);
+        //this.communicator = new ASAPCommunication(this, controllerManager);
+        this.communicator = new HttpCommunication(this);
     }
 
     @Override

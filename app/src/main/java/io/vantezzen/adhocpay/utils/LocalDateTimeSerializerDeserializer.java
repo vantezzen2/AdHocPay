@@ -19,7 +19,8 @@ import java.util.Locale;
  * Source: https://www.javaguides.net/2019/11/gson-localdatetime-localdate.html
  */
 public class LocalDateTimeSerializerDeserializer implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d::MMM::uuuu HH::mm::ss");
+    private static final String FORMAT = "u-M-d H:m:s";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(FORMAT);
 
     @Override
     public JsonElement serialize(LocalDateTime localDateTime, Type srcType, JsonSerializationContext context) {
@@ -30,6 +31,6 @@ public class LocalDateTimeSerializerDeserializer implements JsonSerializer<Local
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
         return LocalDateTime.parse(json.getAsString(),
-                DateTimeFormatter.ofPattern("d::MMM::uuuu HH::mm::ss").withLocale(Locale.ENGLISH));
+                DateTimeFormatter.ofPattern(FORMAT).withLocale(Locale.ENGLISH));
     }
 }

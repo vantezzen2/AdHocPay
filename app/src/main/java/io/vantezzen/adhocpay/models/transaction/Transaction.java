@@ -21,8 +21,7 @@ public class Transaction implements Model {
     private User toUser;
     private float amount;
     private LocalDateTime time;
-
-    private final String LOG_START = "Model:Transaction";
+    public int id;
 
     /**
      * Instantiates a new Transaction.

@@ -83,7 +83,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
             ASAPActivity act = (ASAPActivity) application.getActivity();
             act.startBluetooth();
             act.startBluetoothDiscovery();
-            act.startBluetoothDiscoverable();
+            /*act.startBluetoothDiscoverable();*/
         }
 
         this.application.log(LOG_START, "Communication started");
@@ -199,6 +199,7 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
         }
 
         if (message.length() > 0) {
+            this.application.log("ASAPCommunication", "Füge letzte Nachricht hinzu: " + message);
             addTransaction(message);
         }
 
@@ -220,10 +221,13 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
 
         transmit("__START__", application.getDefaultUri());
         int stringPos = 0;
-        int partLength = 120;
+        int partLength = 80;
         while(stringPos < message.length()) {
             transmit(
-                    message.substring(stringPos, stringPos + partLength),
+                    message.substring(
+                            stringPos,
+                            Math.min(stringPos + partLength, message.length())
+                    ),
                     application.getDefaultUri()
             );
             stringPos += partLength;

@@ -87,6 +87,10 @@ public class AdHocPayApplication {
      * @return Manager manager
      */
     public static Manager getManager() {
+        if (manager == null) {
+            Log.d("AHP", "Es existiert kein Manager - erstelle einen");
+            initializeApplication();
+        }
         return manager;
     }
 
