@@ -1,12 +1,7 @@
 package io.vantezzen.adhocpay.network;
 
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 
 import net.sharksystem.asap.ASAPException;
 import net.sharksystem.asap.android.apps.ASAPActivity;
@@ -17,10 +12,8 @@ import io.vantezzen.adhocpay.AdHocPayApplication;
 import io.vantezzen.adhocpay.controllers.ControllerManager;
 import io.vantezzen.adhocpay.controllers.ControllerManagerImpl;
 import io.vantezzen.adhocpay.manager.Manager;
-import io.vantezzen.adhocpay.manager.ManagerMock;
 import io.vantezzen.adhocpay.models.transaction.Transaction;
 import io.vantezzen.adhocpay.models.transaction.TransactionRepository;
-import io.vantezzen.adhocpay.models.user.User;
 import io.vantezzen.adhocpay.models.user.UserRepository;
 import io.vantezzen.adhocpay.network.asap.ASAPApp;
 
@@ -52,16 +45,22 @@ public class ASAPCommunicationTest {
         Mockito.when(manager.getAppName()).thenReturn("TEST");
         Mockito.when(manager.getDefaultUri()).thenReturn("URI");
 
-        String shouldSendString = "{\"fromUser\":{\"username\":\"karlos\"},\"toUser\":{\"username\":\"peteros\"},\"amount\":15.99,\"time\":\"1::Dec::2020 00::15::00\",\"LOG_START\":\"Model:Transaction\"}";
-        byte[] shouldSend = shouldSendString.getBytes();
+        byte[][] shouldSend = new byte[][]{
+                "__START__".getBytes(),
+                "{\"fromUser\":{\"username\":\"karlos\"},\"toUser\":{\"username\":\"peteros\"},\"amount\":15.99".getBytes(),
+                ",\"time\":\"2020-12-1 0:15:0\",\"id\":999}".getBytes(),
+                "__END__".getBytes()
+        };
 
         // Sende eine Transaktion über den ASAPCommunicator
         ASAPCommunication communication = new ASAPCommunication(manager, controllerManager);
         Transaction testTransaction = new Transaction("karlos", "peteros", 15.99f, LocalDateTime.of(2020, 12,1,0, 15), ur, tr);
+        testTransaction.id = 999;
         communication.sendTransaction(testTransaction);
 
-        // Communication sollte eine Nachricht über die Activity gesendet haben
-
-        Mockito.verify(activityMock).sendASAPMessage("TEST", "URI", shouldSend, true);
+        // Communication sollte Nachrichten über die Activity gesendet haben
+        for(byte[] should : shouldSend) {
+            Mockito.verify(activityMock).sendASAPMessage("TEST", "URI", should, true);
+        }
     }
 }

@@ -105,7 +105,7 @@ public class ManagerMock implements Manager {
 
     @Override
     public ControllerManager getControllerManager() {
-        return null;
+        return controllerManager;
     }
 
     @Override

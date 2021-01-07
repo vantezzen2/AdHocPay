@@ -26,8 +26,14 @@ public class UserController extends BaseController {
     public boolean registerUser(String username) {
         Validation.notNull(username);
 
-        if (manager.getSetting("username") != null) {
+        if (
+                manager.getSetting("username") != null
+        ) {
             // Nutzer ist bereits registriert
+            return true;
+        }
+        if (manager.getUserRepository().userExists(username)) {
+            // Nutzer kann nicht registriert werden, da er bereits exstiert
             return false;
         }
 

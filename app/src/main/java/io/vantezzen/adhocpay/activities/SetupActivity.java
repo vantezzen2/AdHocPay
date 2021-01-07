@@ -42,9 +42,11 @@ public class SetupActivity extends BaseActivity {
 
         // Setze unseren neuen Nutzernamen
         Manager manager = AdHocPayApplication.getManager();
-        manager.getControllerManager().getUserController().registerUser(nutzername.getText().toString());
-
-        Intent intent = new Intent(this, MainActivity.class);
-        this.startActivity(intent);
+        if (manager.getControllerManager().getUserController().registerUser(nutzername.getText().toString())) {
+            Intent intent = new Intent(this, MainActivity.class);
+            this.startActivity(intent);
+        } else {
+            errorMessage.setText(R.string.register_user_exists);
+        }
     }
 }

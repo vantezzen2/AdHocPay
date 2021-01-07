@@ -30,4 +30,22 @@ public class UserRepository extends Repository<User> {
         User user = new User(name, this);
         return user;
     }
+
+    /**
+     * Teste, ob ein Nutzer in der Repository existiert.
+     *
+     * @param name Name des Nutzers
+     * @return True, falls der Nutzer existiert
+     * @throws NullPointerException Falls der Name ungültig ist
+     */
+    public boolean userExists(String name) throws NullPointerException {
+        Validation.notNull(name);
+
+        for (User user : getAll()) {
+            if (user.getUsername().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

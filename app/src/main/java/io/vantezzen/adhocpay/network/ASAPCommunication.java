@@ -1,6 +1,5 @@
 package io.vantezzen.adhocpay.network;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
@@ -8,9 +7,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import net.sharksystem.asap.ASAP;
 import net.sharksystem.asap.ASAPChannel;
-import net.sharksystem.asap.ASAPEngineFS;
 import net.sharksystem.asap.ASAPException;
 import net.sharksystem.asap.ASAPMessages;
 import net.sharksystem.asap.ASAPStorage;
@@ -21,8 +18,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -43,6 +38,11 @@ public class ASAPCommunication implements ASAPMessageReceivedListener, NetworkCo
     private Manager application;
     private boolean started = false;
     private ControllerManager controllerManager;
+
+    public ASAPStorage getAsapStorage() {
+        return asapStorage;
+    }
+
     private ASAPStorage asapStorage = null;
     private String message = ""; // Aktueller Bruchteil der Transaktion
     private Set<Integer> fetchedIds;
