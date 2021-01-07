@@ -54,10 +54,15 @@ public class MainActivity extends BaseActivity {
     protected void displayDynamicData() {
         // Zeige Credit/status informationen
         TextView text = findViewById(R.id.credits);
+        Manager manager = AdHocPayApplication.getManager();
         if(text != null) {
-            Manager manager = AdHocPayApplication.getManager();
             TransactionRepository transactionRepository = manager.getTransactionRepository();
             text.setText(manager.getMe().getCredit(transactionRepository) + "€");
+        }
+
+        TextView hello = findViewById(R.id.helloUserText);
+        if (hello != null) {
+            hello.setText("Hallo, " + manager.getMe().getUsername() + "!");
         }
 
         // Aktualisiere den RecyclerView
